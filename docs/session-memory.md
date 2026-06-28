@@ -70,6 +70,7 @@ Distilled from subagent reference-site research:
 ## Implementation Decisions
 
 - The new site should be a static GitHub Pages site served directly from the repository root.
+- Public navigation is tabbed by section (`Home`, `Shop`, `Collection`, `Adventures`, `Trust`, `Contact`) using hash URLs instead of showing one long scrolling page.
 - Primary files should remain `index.html`, `styles.css`, `app.js`, generated `data/shop.json`, and local media under `assets/` or item folders.
 - No package manager, bundler, framework, or legacy scraper is needed for the Spacerocks site.
 - `scripts/build_shop.py` uses only Python stdlib and reads `inventory/shop/**/item.json` to generate `data/shop.json`.

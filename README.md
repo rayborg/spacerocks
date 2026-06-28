@@ -2,6 +2,8 @@
 
 Spacerocks is a static website for a personal meteorite and space-rock collection. It is intended to migrate the useful content and imagery from the old Google Site into a cleaner GitHub Pages site.
 
+The public site uses section tabs for `Home`, `Shop`, `Collection`, `Adventures`, `Trust`, and `Contact` instead of presenting every section as one long scrolling page.
+
 Target repo: `https://github.com/rayborg/spacerocks`
 
 Expected public URL after GitHub Pages is enabled: `https://rayborg.github.io/spacerocks/`

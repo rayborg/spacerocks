@@ -190,9 +190,44 @@ main,
   background: rgba(255, 255, 255, 0.06);
 }
 
+.nav-links a.active,
+.brand.active {
+  color: var(--text);
+  background: rgba(239, 183, 86, 0.12);
+}
+
 .nav-links .nav-cta {
   color: #1b1309;
   background: var(--gold);
+}
+
+.nav-links .nav-cta.active {
+  color: #1b1309;
+  background: linear-gradient(135deg, #ffd98c, #efb756 52%, #c96b3d);
+}
+
+body.tabs-enabled .site-header {
+  padding-bottom: 1rem;
+}
+
+body.tabs-enabled .hero[hidden] {
+  display: none;
+}
+
+body.tabs-enabled [data-site-section] {
+  animation: section-in 180ms ease-out;
+}
+
+@keyframes section-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero {

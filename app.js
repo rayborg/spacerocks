@@ -1,6 +1,14 @@
 const normalizeText = (value) => String(value || "").toLowerCase().replace(/\s+/g, " ").trim();
 const SHOP_DATA_URL = "data/shop.json";
 const CONTACT_EMAIL = "spacerocks.club@gmail.com";
+const SECTION_TITLES = {
+  home: "Spacerocks | Meteorite Shop, Collection, and Adventures",
+  shop: "Shop | Spacerocks",
+  collection: "Personal Collection | Spacerocks",
+  adventures: "Meteorite Adventures | Spacerocks",
+  trust: "Trust | Spacerocks",
+  contact: "Contact | Spacerocks"
+};
 
 const statusLabels = {
   available: "Available",
@@ -242,7 +250,87 @@ function setupFooterYear() {
   if (year) year.textContent = String(new Date().getFullYear());
 }
 
+function setupSectionTabs() {
+  const sections = Array.from(document.querySelectorAll("[data-site-section]"));
+  const sectionIds = new Set(sections.map((section) => section.id));
+  const hero = document.querySelector(".hero");
+  const brandLink = document.querySelector(".brand[href^='#']");
+  const navLinks = Array.from(document.querySelectorAll(".nav-links a[href^='#']"));
+
+  if (!sections.length || !sectionIds.has("home")) return;
+
+  document.body.classList.add("tabs-enabled");
+
+  const decodeSectionId = (value) => {
+    try {
+      return decodeURIComponent(String(value || "").replace(/^#/, ""));
+    } catch {
+      return "";
+    }
+  };
+
+  const sectionFromHash = () => {
+    const id = decodeSectionId(window.location.hash);
+    return sectionIds.has(id) ? id : "home";
+  };
+
+  const setActiveNav = (activeId) => {
+    brandLink?.classList.toggle("active", activeId === "home");
+    navLinks.forEach((link) => {
+      const target = link.getAttribute("href")?.replace(/^#/, "");
+      const isActive = target === activeId;
+      link.classList.toggle("active", isActive);
+      if (isActive) {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+  };
+
+  const showSection = (activeId, { scroll = false } = {}) => {
+    sections.forEach((section) => {
+      const isActive = section.id === activeId;
+      section.hidden = !isActive;
+      section.setAttribute("aria-hidden", String(!isActive));
+    });
+
+    if (hero) hero.hidden = activeId !== "home";
+    document.body.dataset.activeSection = activeId;
+    document.title = SECTION_TITLES[activeId] || SECTION_TITLES.home;
+    setActiveNav(activeId);
+
+    if (scroll) {
+      if (activeId === "home") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        document.getElementById("main")?.scrollIntoView({ block: "start", behavior: "smooth" });
+      }
+    }
+  };
+
+  document.addEventListener("click", (event) => {
+    if (!(event.target instanceof Element)) return;
+    const link = event.target.closest("a[href^='#']");
+    if (!link) return;
+
+    const target = decodeSectionId(link.getAttribute("href"));
+    if (!sectionIds.has(target)) return;
+
+    event.preventDefault();
+    if (window.location.hash !== `#${target}`) {
+      history.pushState(null, "", `#${target}`);
+    }
+    showSection(target, { scroll: true });
+  });
+
+  window.addEventListener("hashchange", () => showSection(sectionFromHash(), { scroll: true }));
+  window.addEventListener("popstate", () => showSection(sectionFromHash(), { scroll: true }));
+  showSection(sectionFromHash());
+}
+
 setupImageFallbacks();
+setupSectionTabs();
 setupShopData();
 setupCollectionFilters();
 setupFooterYear();
