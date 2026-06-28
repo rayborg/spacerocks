@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Static helper for drafting Spacerocks inventory item.json files.">
+  <title>Spacerocks Listing Helper</title>
+  <link rel="stylesheet" href="../styles.css">
+</head>
+<body class="admin-page">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header admin-header">
+    <nav class="top-nav" aria-label="Admin navigation">
+      <a class="brand" href="../index.html#top" aria-label="Spacerocks home">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>
+          <strong>Spacerocks</strong>
+          <small>Listing helper</small>
+        </span>
+      </a>
+      <div class="nav-links">
+        <a href="../index.html#shop">Back to shop</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" class="admin-main">
+    <section class="section-block admin-intro" aria-labelledby="helper-title">
+      <p class="eyebrow">Inventory helper</p>
+      <h1 id="helper-title">Draft a shop item.json without memorizing the fields.</h1>
+      <p>This page is static. It cannot upload images, authenticate to GitHub, or commit files. Use it to draft JSON, then upload or commit the item folder in GitHub.</p>
+    </section>
+
+    <section class="admin-layout" aria-label="New listing builder">
+      <form class="listing-form" id="listingForm">
+        <label>
+          <span>Title</span>
+          <input name="title" type="text" autocomplete="off" placeholder="Aguas Zarcas slice 3.2 g" required>
+        </label>
+        <label>
+          <span>Official meteorite name for MetBull lookup</span>
+          <input name="name" type="text" autocomplete="off" placeholder="Aguas Zarcas">
+        </label>
+        <div class="form-row">
+          <label>
+            <span>Weight (g)</span>
+            <input name="weight_g" type="number" min="0" step="0.001" placeholder="3.2">
+          </label>
+          <label>
+            <span>Price (USD, blank for inquiry)</span>
+            <input name="price_usd" type="number" min="0" step="0.01" placeholder="">
+          </label>
+        </div>
+        <div class="form-row">
+          <label>
+            <span>Status</span>
+            <select name="status">
+              <option value="available">Available</option>
+              <option value="inquiry" selected>Inquiry</option>
+              <option value="hold">Hold</option>
+              <option value="sold">Sold</option>
+            </select>
+          </label>
+          <label>
+            <span>Type</span>
+            <input name="type" type="text" autocomplete="off" placeholder="Carbonaceous chondrite fall">
+          </label>
+        </div>
+        <label>
+          <span>Description</span>
+          <textarea name="description" rows="4" placeholder="Short collector-facing description."></textarea>
+        </label>
+        <label>
+          <span>Provenance</span>
+          <textarea name="provenance" rows="3" placeholder="Source, packet, field notes, or documentation summary."></textarea>
+        </label>
+        <label>
+          <span>Badges, comma separated</span>
+          <input name="badges" type="text" autocomplete="off" placeholder="Carbonaceous, fresh fall, display">
+        </label>
+      </form>
+
+      <aside class="preview-panel" aria-live="polite">
+        <div>
+          <p class="eyebrow">Suggested folder</p>
+          <p class="folder-preview"><code id="folderPreview">inventory/shop/new-listing/</code></p>
+          <p>Put this preview in <code>item.json</code>. Upload images into the same folder as <code>front.jpg</code>, <code>back.jpg</code>, <code>detail-1.jpg</code>, or add explicit image paths to the JSON.</p>
+          <p>After the files are committed, GitHub Actions rebuilds <code>data/shop.json</code> on push and on the 10-minute schedule.</p>
+        </div>
+        <pre class="json-preview" id="jsonPreview" tabindex="0"></pre>
+      </aside>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById("listingForm");
+    const folderPreview = document.getElementById("folderPreview");
+    const jsonPreview = document.getElementById("jsonPreview");
+
+    function slugify(value) {
+      return String(value || "new-listing")
+        .toLowerCase()
+        .normalize("NFKD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "") || "new-listing";
+    }
+
+    function numberOrNull(value) {
+      if (value === "") return null;
+      const number = Number(value);
+      return Number.isFinite(number) ? number : null;
+    }
+
+    function updatePreview() {
+      const data = new FormData(form);
+      const title = String(data.get("title") || "").trim();
+      const name = String(data.get("name") || "").trim();
+      const badges = String(data.get("badges") || "")
+        .split(",")
+        .map((badge) => badge.trim())
+        .filter(Boolean);
+      const item = {
+        title,
+        name,
+        weight_g: numberOrNull(data.get("weight_g")),
+        price_usd: numberOrNull(data.get("price_usd")),
+        status: data.get("status"),
+        description: String(data.get("description") || "").trim(),
+        type: String(data.get("type") || "").trim(),
+        classification: "",
+        provenance: String(data.get("provenance") || "").trim(),
+        badges,
+        image_order: ["front.jpg", "back.jpg", "detail-1.jpg"],
+        images: [],
+        featured: false,
+        metbull_lookup: Boolean(name)
+      };
+
+      folderPreview.textContent = `inventory/shop/${slugify(title || name)}/`;
+      jsonPreview.textContent = `${JSON.stringify(item, null, 2)}\n`;
+    }
+
+    form.addEventListener("input", updatePreview);
+    updatePreview();
+  </script>
+</body>
+</html>

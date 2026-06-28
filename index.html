@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Spacerocks is a polished meteorite shop, personal collection archive, and field adventure journal focused on provenance, science notes, and inquiry-based sales.">
+  <title>Spacerocks | Meteorite Shop, Collection, and Adventures</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header" id="top">
+    <nav class="top-nav" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Spacerocks home">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>
+          <strong>Spacerocks</strong>
+          <small>Meteorites with field notes</small>
+        </span>
+      </a>
+      <div class="nav-links">
+        <a href="#shop">Shop</a>
+        <a href="#collection">Personal Collection</a>
+        <a href="#adventures">Adventures</a>
+        <a href="#trust">Trust</a>
+        <a class="nav-cta" href="mailto:spacerocks.club@gmail.com?subject=Spacerocks%20inquiry">Contact</a>
+      </div>
+    </nav>
+
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">Shop, archive, and field journal</p>
+        <h1 id="hero-title">Collected pieces of the solar system, documented before they are displayed or offered.</h1>
+        <p class="hero-lede">Spacerocks brings together inquiry-only meteorite offerings, a clearly marked not-for-sale personal collection, and expedition notes from fresh fall recoveries.</p>
+        <div class="hero-actions" aria-label="Primary actions">
+          <a class="button button-primary" href="#shop">Shop by inquiry</a>
+          <a class="button" href="#collection">View passports</a>
+          <a class="button button-ghost" href="#adventures">Read adventures</a>
+        </div>
+        <dl class="hero-metrics" aria-label="Site highlights">
+          <div>
+            <dt>20</dt>
+            <dd>collection passports</dd>
+          </div>
+          <div>
+            <dt>700 g</dt>
+            <dd>Santa Filomena recovered</dd>
+          </div>
+          <div>
+            <dt>188.5 g</dt>
+            <dd>Aguas Zarcas puzzle inquiry</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div class="hero-media" aria-label="Featured Spacerocks images">
+        <figure class="media hero-image hero-image-main">
+          <img class="js-safe-image" src="assets/images/spacerock/source-aguas-zarcas.png" alt="Aguas Zarcas meteorite archive image" width="720" height="600" loading="eager" decoding="async" data-fallback-label="Aguas Zarcas archive image">
+          <span class="image-fallback">Aguas Zarcas archive</span>
+          <figcaption>
+            <span class="badge badge-science">Carbonaceous fall</span>
+            <strong>Aguas Zarcas, Costa Rica</strong>
+          </figcaption>
+        </figure>
+        <figure class="media hero-image hero-image-small">
+          <img class="js-safe-image" src="assets/images/spacerock/source-expeditions.png" alt="Field expedition meteorite recovery archive image" width="720" height="600" loading="lazy" decoding="async" data-fallback-label="Expedition archive image">
+          <span class="image-fallback">Field archive</span>
+          <figcaption>
+            <span class="badge badge-field">Adventure journal</span>
+            <strong>Recovery notes</strong>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  </header>
+
+  <main id="main">
+    <section class="signal-bar" aria-label="Spacerocks operating principles">
+      <article>
+        <span class="signal-icon" aria-hidden="true">01</span>
+        <h2>Provenance first</h2>
+        <p>Specimen notes prioritize mass, classification, status, and collection context before price.</p>
+      </article>
+      <article>
+        <span class="signal-icon" aria-hidden="true">02</span>
+        <h2>MetBull oriented</h2>
+        <p>Science labels are treated as references to verify, not marketing decoration.</p>
+      </article>
+      <article>
+        <span class="signal-icon" aria-hidden="true">03</span>
+        <h2>Clear boundaries</h2>
+        <p>Shop offers are by inquiry. Personal collection cards are marked not for sale.</p>
+      </article>
+    </section>
+
+    <section class="section-block shop-section" id="shop" aria-labelledby="shop-title">
+      <div class="section-heading">
+        <p class="eyebrow">Active shop</p>
+        <h2 id="shop-title">Inquiry-based meteorite offerings</h2>
+        <p>Availability, provenance packets, export constraints, and final pricing are confirmed by email before any sale. No checkout pressure, no mystery stock.</p>
+      </div>
+
+      <div class="shop-meta">
+        <p class="shop-generated-note" id="shopRefreshStatus">Inventory cards are generated from <code>inventory/shop/</code> and refreshed by GitHub Actions about every 10 minutes after uploads or edits.</p>
+        <a class="helper-link" href="admin/new-listing.html">Draft a listing</a>
+      </div>
+
+      <div class="offer-grid" id="shopItems" data-shop-grid aria-live="polite">
+        <article class="offer-card featured-offer" data-shop-fallback>
+          <div class="media offer-media">
+            <img class="js-safe-image" src="assets/images/spacerock/source-puzzle-190g.png" alt="Aguas Zarcas five piece cosmic puzzle specimen" width="720" height="600" loading="lazy" decoding="async" data-fallback-label="Aguas Zarcas puzzle image">
+            <span class="image-fallback">Puzzle image</span>
+          </div>
+          <div class="card-content">
+            <div class="badge-row">
+              <span class="badge badge-inquiry">Inquiry</span>
+              <span class="badge badge-scarce">Puzzle set</span>
+            </div>
+            <h3>Aguas Zarcas Cosmic 5pc Puzzle</h3>
+            <p>A 188.5 g five-piece Aguas Zarcas presentation for collectors who value visual continuity and documented fall context.</p>
+            <dl class="spec-list">
+              <div><dt>Mass</dt><dd>188.5 g total</dd></div>
+              <div><dt>Type</dt><dd>Carbonaceous chondrite fall</dd></div>
+              <div><dt>Status</dt><dd>Available by inquiry</dd></div>
+            </dl>
+            <a class="button button-primary" href="mailto:spacerocks.club@gmail.com?subject=Inquiry%20-%20Aguas%20Zarcas%205pc%20Puzzle&body=Hello%20Spacerocks%2C%0A%0AI%20am%20interested%20in%20the%20Aguas%20Zarcas%20Cosmic%205pc%20Puzzle.%20Please%20send%20availability%2C%20provenance%2C%20and%20price%20details.">Request dossier</a>
+          </div>
+        </article>
+
+        <article class="offer-card" data-shop-fallback>
+          <div class="media offer-media">
+            <img class="js-safe-image" src="assets/images/spacerock/source-aguas-zarcas-hammer.png" alt="Aguas Zarcas hammerstone panel archive image" width="720" height="600" loading="lazy" decoding="async" data-fallback-label="Hammerstone panel image">
+            <span class="image-fallback">Hammerstone image</span>
+          </div>
+          <div class="card-content">
+            <div class="badge-row">
+              <span class="badge badge-inquiry">Inquiry</span>
+              <span class="badge badge-provenance">Story panel</span>
+            </div>
+            <h3>Aguas Zarcas Hammerstone Panel</h3>
+            <p>A display panel built around the hammerstone story, prepared for collectors who want the event context beside the specimen.</p>
+            <dl class="spec-list">
+              <div><dt>Focus</dt><dd>Fall story and display</dd></div>
+              <div><dt>Packet</dt><dd>Photo and note set</dd></div>
+              <div><dt>Status</dt><dd>Available by inquiry</dd></div>
+            </dl>
+            <a class="button" href="mailto:spacerocks.club@gmail.com?subject=Inquiry%20-%20Aguas%20Zarcas%20Hammerstone%20Panel">Ask about panel</a>
+          </div>
+        </article>
+
+        <article class="offer-card compact-offer" data-shop-fallback>
+          <div class="card-content">
+            <div class="badge-row">
+              <span class="badge badge-inquiry">Rotating list</span>
+              <span class="badge badge-science">MetBull oriented</span>
+            </div>
+            <h3>Curated meteorite sales</h3>
+            <p>Small, vetted availability lists for collectors seeking classified stones, irons, carbonaceous pieces, or educational examples.</p>
+            <dl class="spec-list">
+              <div><dt>Buying mode</dt><dd>Email inquiry</dd></div>
+              <div><dt>Records</dt><dd>Classification and source notes</dd></div>
+              <div><dt>Fit</dt><dd>Starter sets to advanced specimens</dd></div>
+            </dl>
+            <a class="button" href="mailto:spacerocks.club@gmail.com?subject=Current%20Spacerocks%20availability%20list">Request current list</a>
+          </div>
+        </article>
+
+        <article class="offer-card compact-offer" data-shop-fallback>
+          <div class="card-content">
+            <div class="badge-row">
+              <span class="badge badge-inquiry">Inquiry</span>
+              <span class="badge badge-field">Education</span>
+            </div>
+            <h3>Casts and 3D models</h3>
+            <p>Display-safe casts and digital model projects for classrooms, talks, collection planning, and touch-friendly outreach.</p>
+            <dl class="spec-list">
+              <div><dt>Use</dt><dd>Display and teaching</dd></div>
+              <div><dt>Format</dt><dd>Casts or model files</dd></div>
+              <div><dt>Status</dt><dd>Built by inquiry</dd></div>
+            </dl>
+            <a class="button" href="mailto:spacerocks.club@gmail.com?subject=Inquiry%20-%20Spacerocks%20casts%20and%203D%20models">Start a model inquiry</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-block collection-section" id="collection" aria-labelledby="collection-title">
+      <div class="section-heading split-heading">
+        <div>
+          <p class="eyebrow">Personal collection</p>
+          <h2 id="collection-title">Specimen passport cards</h2>
+          <p>These records are a private collecting archive. They are shown for education, provenance discipline, and science context, not as active listings.</p>
+        </div>
+        <figure class="media heading-media">
+          <img class="js-safe-image" src="assets/images/spacerock/source-collection.png" alt="Spacerocks personal meteorite collection archive image" width="720" height="600" loading="lazy" decoding="async" data-fallback-label="Collection archive image">
+          <span class="image-fallback">Collection archive</span>
+        </figure>
+      </div>
+
+      <div class="collection-tools" aria-label="Collection filters">
+        <label class="search-control" for="collectionSearch">
+          <span>Search collection</span>
+          <input id="collectionSearch" type="search" autocomplete="off" placeholder="Search Chelyabinsk, lunar, carbonaceous, iron...">
+        </label>
+        <div class="filter-pills" role="group" aria-label="Filter collection passports by theme">
+          <button type="button" class="filter-pill active" data-collection-filter="all" aria-pressed="true">All</button>
+          <button type="button" class="filter-pill" data-collection-filter="fall" aria-pressed="false">Falls and historics</button>
+          <button type="button" class="filter-pill" data-collection-filter="planetary" aria-pressed="false">Lunar and Martian</button>
+          <button type="button" class="filter-pill" data-collection-filter="carbonaceous" aria-pressed="false">Carbonaceous</button>
+          <button type="button" class="filter-pill" data-collection-filter="iron" aria-pressed="false">Iron and pallasite</button>
+          <button type="button" class="filter-pill" data-collection-filter="ordinary" aria-pressed="false">Ordinary chondrites</button>
+        </div>
+        <p class="collection-count" id="collectionCount" aria-live="polite">20 collection passports shown</p>
+      </div>
+
+      <div class="passport-grid" id="collectionGrid">
+        <article class="passport-card" data-collection-card data-tags="fall historic ordinary witnessed" data-name="Chelyabinsk LL5 292g">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Chelyabinsk</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>292 g</dd></div>
+            <div><dt>Class</dt><dd>LL5 ordinary chondrite</dd></div>
+            <div><dt>Collection note</dt><dd>Large witnessed-fall reference specimen.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="planetary martian rare breccia" data-name="Black Beauty mini shield 70mg">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Black Beauty mini shield</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>70 mg</dd></div>
+            <div><dt>Class</dt><dd>Martian breccia</dd></div>
+            <div><dt>Collection note</dt><dd>Mini shield format for the NWA 7034 family story.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="achondrite rare science nwa" data-name="NWA 7325 300mg 50mg">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>NWA 7325</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>300 mg and 50 mg</dd></div>
+            <div><dt>Class</dt><dd>Ungrouped achondrite</dd></div>
+            <div><dt>Collection note</dt><dd>Science-facing pair kept for comparative study.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="planetary lunar full-slice rare" data-name="Lunar DaG 400 full slice 7.94g">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Lunar DaG 400 full slice</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>7.94 g</dd></div>
+            <div><dt>Class</dt><dd>Lunar meteorite</dd></div>
+            <div><dt>Collection note</dt><dd>Full slice kept as a centerpiece planetary passport.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="planetary martian fall rare" data-name="Martian Tissint particles">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Martian Tissint particles</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>Particles</dd></div>
+            <div><dt>Class</dt><dd>Martian shergottite fall</dd></div>
+            <div><dt>Collection note</dt><dd>Small-particle archive for a fresh observed Martian fall.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="fall historic ordinary hammer" data-name="Worden 1g red paint">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Worden red paint</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>1 g</dd></div>
+            <div><dt>Class</dt><dd>Ordinary chondrite fall</dd></div>
+            <div><dt>Collection note</dt><dd>Red paint context preserved as the key story marker.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="fall carbonaceous rare science" data-name="Tagish Lake 0.7g">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Tagish Lake</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>0.7 g</dd></div>
+            <div><dt>Class</dt><dd>Carbonaceous chondrite</dd></div>
+            <div><dt>Collection note</dt><dd>Scarce carbonaceous fall represented at sub-gram scale.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="fall ordinary science" data-name="Zag 42.66g">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Zag</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>42.66 g</dd></div>
+            <div><dt>Class</dt><dd>H chondrite breccia</dd></div>
+            <div><dt>Collection note</dt><dd>Kept for its scientific and collecting history.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="fall ordinary india" data-name="Katol 21.72g">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Katol</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>21.72 g</dd></div>
+            <div><dt>Class</dt><dd>Ordinary chondrite fall</dd></div>
+            <div><dt>Collection note</dt><dd>Fresh-fall reference specimen from India.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="ordinary find desert" data-name="Danby Dry Lake H6 53.7g">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Danby Dry Lake</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>53.7 g</dd></div>
+            <div><dt>Class</dt><dd>H6 ordinary chondrite</dd></div>
+            <div><dt>Collection note</dt><dd>Dry lake find with desert collection character.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="iron pallasite classic" data-name="Imilac 60g">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Imilac</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>60 g</dd></div>
+            <div><dt>Class</dt><dd>Pallasite</dd></div>
+            <div><dt>Collection note</dt><dd>Classic stony-iron anchor specimen.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="fall historic ordinary hammer" data-name="Peekskill 1.18g">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Peekskill</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>1.18 g</dd></div>
+            <div><dt>Class</dt><dd>H6 ordinary chondrite</dd></div>
+            <div><dt>Collection note</dt><dd>Historic car-strike fall represented in micro format.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="fall historic ordinary crater" data-name="Carancas 22g">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Carancas</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>22 g</dd></div>
+            <div><dt>Class</dt><dd>Ordinary chondrite fall</dd></div>
+            <div><dt>Collection note</dt><dd>Crater-forming fall context emphasized in the record.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="iron historic mexico" data-name="Zacatecas 29.79g">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Zacatecas</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>29.79 g</dd></div>
+            <div><dt>Class</dt><dd>Iron meteorite</dd></div>
+            <div><dt>Collection note</dt><dd>Historic locality represented by a compact iron piece.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="fall achondrite rare" data-name="Pena Blanca Spring 5.46g">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Pe&ntilde;a Blanca Spring</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>5.46 g</dd></div>
+            <div><dt>Class</dt><dd>Aubrite</dd></div>
+            <div><dt>Collection note</dt><dd>Rare achondrite fall kept with certificate notes.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="nwa main-mass science" data-name="NWA 807 main mass 315g">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>NWA 807 main mass</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>315 g</dd></div>
+            <div><dt>Science note</dt><dd>Classification retained with specimen records.</dd></div>
+            <div><dt>Collection note</dt><dd>Held as a named NWA main-mass passport.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="iron oriented rare" data-name="Taza teardrop bullet">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Taza teardrop and bullet</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>Teardrop and bullet forms</dd></div>
+            <div><dt>Class</dt><dd>Iron meteorite</dd></div>
+            <div><dt>Collection note</dt><dd>Shape-focused pair for oriented iron display.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="fall ordinary africa" data-name="Gao 2.82g">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Gao</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>2.82 g</dd></div>
+            <div><dt>Class</dt><dd>H5 ordinary chondrite</dd></div>
+            <div><dt>Collection note</dt><dd>Classic African fall represented as a compact specimen.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="fall historic ordinary europe" data-name="Ensisheim 30mg">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Ensisheim</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>30 mg</dd></div>
+            <div><dt>Class</dt><dd>LL6 ordinary chondrite</dd></div>
+            <div><dt>Collection note</dt><dd>Historic 1492 fall represented in micro format.</dd></div>
+          </dl>
+        </article>
+
+        <article class="passport-card" data-collection-card data-tags="fall ordinary africa" data-name="Chergach 4.3g">
+          <div class="passport-topline"><span>Specimen Passport</span><span class="badge badge-private">Not for sale</span></div>
+          <h3>Chergach</h3>
+          <dl class="passport-list">
+            <div><dt>Mass</dt><dd>4.3 g</dd></div>
+            <div><dt>Class</dt><dd>H5 ordinary chondrite</dd></div>
+            <div><dt>Collection note</dt><dd>Observed fall passport with desert recovery context.</dd></div>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-block adventures-section" id="adventures" aria-labelledby="adventures-title">
+      <div class="section-heading">
+        <p class="eyebrow">Meteorite adventures</p>
+        <h2 id="adventures-title">Field notes, recoveries, and living provenance</h2>
+        <p>The adventure journal keeps the human work visible: travel windows, search conditions, recovery totals, and the odd details collectors remember.</p>
+      </div>
+
+      <div class="adventure-grid">
+        <article class="adventure-card">
+          <div class="media adventure-media">
+            <img class="js-safe-image" src="assets/images/spacerock/source-santa-filomena.png" alt="Santa Filomena Brazil meteorite recovery archive image" width="720" height="600" loading="lazy" decoding="async" data-fallback-label="Santa Filomena field image">
+            <span class="image-fallback">Santa Filomena field archive</span>
+          </div>
+          <div class="adventure-content">
+            <div class="badge-row">
+              <span class="badge badge-field">Field recovery</span>
+              <span class="badge badge-provenance">Brazil</span>
+            </div>
+            <h3>Santa Filomena, Brazil</h3>
+            <p class="adventure-lede">Aug 30-Sep 6 expedition notes from the post-fall search, with 700 g recovered and a largest individual of 260 g.</p>
+            <dl class="adventure-stats">
+              <div><dt>Window</dt><dd>Aug 30-Sep 6</dd></div>
+              <div><dt>Recovered</dt><dd>700 g</dd></div>
+              <div><dt>Largest</dt><dd>260 g</dd></div>
+            </dl>
+            <ol class="timeline" aria-label="Santa Filomena field timeline">
+              <li><time datetime="2020-08-30">Aug 30</time><span>Arrival and route planning with local reports.</span></li>
+              <li><time datetime="2020-09-02">Midweek</time><span>Search lanes, interviews, and fragment documentation.</span></li>
+              <li><time datetime="2020-09-06">Sep 6</time><span>Final weigh-in and recovery notes, largest specimen 260 g.</span></li>
+            </ol>
+          </div>
+        </article>
+
+        <article class="adventure-card">
+          <div class="media adventure-media">
+            <img class="js-safe-image" src="assets/images/spacerock/source-aguas-zarcas.png" alt="Aguas Zarcas Costa Rica meteorite fall archive image" width="720" height="600" loading="lazy" decoding="async" data-fallback-label="Aguas Zarcas field image">
+            <span class="image-fallback">Aguas Zarcas archive</span>
+          </div>
+          <div class="adventure-content">
+            <div class="badge-row">
+              <span class="badge badge-field">2019 fall</span>
+              <span class="badge badge-science">Carbonaceous</span>
+            </div>
+            <h3>Aguas Zarcas, Costa Rica</h3>
+            <p class="adventure-lede">A fall archive centered on a 14 g oriented individual, a 190 g cosmic puzzle, Rocky the meteorite dog, and the hammerstone panel.</p>
+            <dl class="adventure-stats">
+              <div><dt>Oriented</dt><dd>14 g individual</dd></div>
+              <div><dt>Puzzle</dt><dd>190 g story set</dd></div>
+              <div><dt>Local note</dt><dd>Rocky the meteorite dog</dd></div>
+            </dl>
+            <ol class="timeline" aria-label="Aguas Zarcas story timeline">
+              <li><time datetime="2019">2019</time><span>Fall documentation begins around fresh carbonaceous material.</span></li>
+              <li><time datetime="2019">Archive</time><span>14 g oriented individual and cosmic puzzle notes assembled.</span></li>
+              <li><time datetime="2019">Panel</time><span>Hammerstone story prepared as a visual provenance panel.</span></li>
+            </ol>
+          </div>
+        </article>
+      </div>
+
+      <div class="journal-strip" aria-label="Additional adventure images">
+        <figure class="media journal-image">
+          <img class="js-safe-image" src="assets/images/spacerock/source-santa-filomena-part-2.png" alt="Santa Filomena expedition archive image part two" width="720" height="600" loading="lazy" decoding="async" data-fallback-label="Santa Filomena part two">
+          <span class="image-fallback">Field image</span>
+        </figure>
+        <figure class="media journal-image">
+          <img class="js-safe-image" src="assets/images/spacerock/source-santa-filomena-part-3.png" alt="Santa Filomena expedition archive image part three" width="720" height="600" loading="lazy" decoding="async" data-fallback-label="Santa Filomena part three">
+          <span class="image-fallback">Field image</span>
+        </figure>
+        <figure class="media journal-image">
+          <img class="js-safe-image" src="assets/images/spacerock/source-puzzle-190g.png" alt="Aguas Zarcas cosmic puzzle archive image" width="720" height="600" loading="lazy" decoding="async" data-fallback-label="Aguas Zarcas puzzle">
+          <span class="image-fallback">Puzzle image</span>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section-block trust-section" id="trust" aria-labelledby="trust-title">
+      <div class="section-heading">
+        <p class="eyebrow">Trust and orientation</p>
+        <h2 id="trust-title">How Spacerocks should feel to a collector</h2>
+        <p>The site borrows the strongest habits of established meteorite dealers and field collectors: passport-style records, status clarity, and enough science orientation to ask better questions.</p>
+      </div>
+
+      <div class="trust-grid">
+        <article>
+          <span class="trust-number">01</span>
+          <h3>Specimen passports</h3>
+          <p>Each collection card separates mass, class, status, and story so provenance is readable at a glance.</p>
+        </article>
+        <article>
+          <span class="trust-number">02</span>
+          <h3>Status badges</h3>
+          <p>Inquiry, not-for-sale, scarce, field, and science badges make it clear what is available and what is archival.</p>
+        </article>
+        <article>
+          <span class="trust-number">03</span>
+          <h3>Science-first language</h3>
+          <p>Classifications are presented as MetBull-oriented reference points and should be verified against final specimen documentation.</p>
+        </article>
+        <article>
+          <span class="trust-number">04</span>
+          <h3>Direct contact</h3>
+          <p>Practical questions, current availability, provenance scans, and display options all start with a collector-to-collector email.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="contact-panel" id="contact" aria-labelledby="contact-title">
+      <div>
+        <p class="eyebrow">Collector contact</p>
+        <h2 id="contact-title">Ask for the current list, provenance details, or a specimen packet.</h2>
+        <p>Use a short note with the meteorite name, your collecting goal, and whether you need photos, dimensions, classification references, or display help.</p>
+      </div>
+      <a class="button button-primary" href="mailto:spacerocks.club@gmail.com?subject=Spacerocks%20collector%20inquiry">Email spacerocks.club@gmail.com</a>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; <span id="year">2026</span> Spacerocks. Meteorite shop, personal archive, and field journal.</p>
+    <a href="#top">Back to top</a>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

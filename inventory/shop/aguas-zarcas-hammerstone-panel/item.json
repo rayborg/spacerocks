@@ -1,0 +1,20 @@
+{
+  "title": "Aguas Zarcas Hammerstone Panel",
+  "name": "Aguas Zarcas",
+  "weight_g": null,
+  "price_usd": null,
+  "status": "inquiry",
+  "description": "A display panel built around the hammerstone story, prepared for collectors who want the event context beside the specimen.",
+  "type": "Carbonaceous chondrite fall",
+  "classification": "CM2",
+  "provenance": "Panel-format story presentation with photo and note packet available before any sale discussion.",
+  "badges": ["Story panel", "Hammerstone", "MetBull"],
+  "images": [
+    {
+      "src": "assets/images/spacerock/source-aguas-zarcas-hammer.png",
+      "alt": "Aguas Zarcas hammerstone panel archive image"
+    }
+  ],
+  "featured": false,
+  "metbull_lookup": true
+}

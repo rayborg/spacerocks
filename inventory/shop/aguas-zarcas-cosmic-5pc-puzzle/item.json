@@ -1,0 +1,20 @@
+{
+  "title": "Aguas Zarcas Cosmic 5pc Puzzle",
+  "name": "Aguas Zarcas",
+  "weight_g": 188.5,
+  "price_usd": null,
+  "status": "available",
+  "description": "A five-piece Aguas Zarcas presentation for collectors who value visual continuity and documented fall context.",
+  "type": "Carbonaceous chondrite fall",
+  "classification": "CM2",
+  "provenance": "Prepared as a visual puzzle set with Spacerocks fall-story notes and dossier available by inquiry.",
+  "badges": ["Puzzle set", "Carbonaceous", "MetBull"],
+  "images": [
+    {
+      "src": "assets/images/spacerock/source-puzzle-190g.png",
+      "alt": "Aguas Zarcas five piece cosmic puzzle specimen"
+    }
+  ],
+  "featured": true,
+  "metbull_lookup": true
+}

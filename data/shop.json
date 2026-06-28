@@ -1,0 +1,95 @@
+{
+  "generated_at": "2026-06-27T23:54:53Z",
+  "items": [
+    {
+      "badges": [
+        "Puzzle set",
+        "Carbonaceous",
+        "MetBull"
+      ],
+      "classification": "CM2",
+      "description": "A five-piece Aguas Zarcas presentation for collectors who value visual continuity and documented fall context.",
+      "featured": true,
+      "images": [
+        {
+          "alt": "Aguas Zarcas five piece cosmic puzzle specimen",
+          "src": "assets/images/spacerock/source-puzzle-190g.png"
+        }
+      ],
+      "metbull": {
+        "bulletin": "108",
+        "bulletin_url": "https://doi.org/10.1111/maps.13493",
+        "classification": "CM2",
+        "code": "69696",
+        "fall_find": "Confirmed fall",
+        "fall_find_marker": "Y^c",
+        "official_name": "Aguas Zarcas",
+        "place": "Alajuela, Costa Rica",
+        "source_url": "https://www.lpi.usra.edu/meteor/metbull.php?code=69696",
+        "status": "Official",
+        "total_known_mass": "27 kg",
+        "year": "2019"
+      },
+      "metbull_lookup": {
+        "cached_at": "2026-06-27T23:54:52Z",
+        "enabled": true,
+        "status": "ok"
+      },
+      "name": "Aguas Zarcas",
+      "provenance": "Prepared as a visual puzzle set with Spacerocks fall-story notes and dossier available by inquiry.",
+      "slug": "aguas-zarcas-cosmic-5pc-puzzle",
+      "status": "available",
+      "title": "Aguas Zarcas Cosmic 5pc Puzzle",
+      "type": "Carbonaceous chondrite fall",
+      "weight_g": 188.5
+    },
+    {
+      "badges": [
+        "Story panel",
+        "Hammerstone",
+        "MetBull"
+      ],
+      "classification": "CM2",
+      "description": "A display panel built around the hammerstone story, prepared for collectors who want the event context beside the specimen.",
+      "featured": false,
+      "images": [
+        {
+          "alt": "Aguas Zarcas hammerstone panel archive image",
+          "src": "assets/images/spacerock/source-aguas-zarcas-hammer.png"
+        }
+      ],
+      "metbull": {
+        "bulletin": "108",
+        "bulletin_url": "https://doi.org/10.1111/maps.13493",
+        "classification": "CM2",
+        "code": "69696",
+        "fall_find": "Confirmed fall",
+        "fall_find_marker": "Y^c",
+        "official_name": "Aguas Zarcas",
+        "place": "Alajuela, Costa Rica",
+        "source_url": "https://www.lpi.usra.edu/meteor/metbull.php?code=69696",
+        "status": "Official",
+        "total_known_mass": "27 kg",
+        "year": "2019"
+      },
+      "metbull_lookup": {
+        "cached_at": "2026-06-27T23:54:52Z",
+        "enabled": true,
+        "status": "ok"
+      },
+      "name": "Aguas Zarcas",
+      "provenance": "Panel-format story presentation with photo and note packet available before any sale discussion.",
+      "slug": "aguas-zarcas-hammerstone-panel",
+      "status": "inquiry",
+      "title": "Aguas Zarcas Hammerstone Panel",
+      "type": "Carbonaceous chondrite fall"
+    }
+  ],
+  "lookup_status": {
+    "enabled": 2,
+    "error": 0,
+    "not_found": 0,
+    "ok": 2,
+    "skipped": 0
+  }
+}

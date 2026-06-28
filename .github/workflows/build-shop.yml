@@ -1,0 +1,59 @@
+name: Build Spacerocks shop
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "inventory/shop/**"
+      - "scripts/build_shop.py"
+      - "data/shop.json"
+      - "data/metbull-cache.json"
+      - "admin/new-listing.html"
+      - "index.html"
+      - "styles.css"
+      - "app.js"
+      - ".github/workflows/build-shop.yml"
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-spacerocks-shop
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build shop data
+        run: python scripts/build_shop.py
+      - name: Validate generated JSON
+        run: |
+          python -m json.tool data/shop.json >/dev/null
+          python -m json.tool data/metbull-cache.json >/dev/null
+      - name: Commit generated shop data
+        run: |
+          git fetch --no-tags origin main
+          if [ "$(git rev-parse HEAD)" != "$(git rev-parse FETCH_HEAD)" ]; then
+            echo "Remote main changed during shop build; skipping stale generated-data commit"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/shop.json data/metbull-cache.json
+          if git diff --cached --quiet; then
+            echo "No generated shop data changes"
+          else
+            git commit -m "Build Spacerocks shop data"
+            git push
+          fi
