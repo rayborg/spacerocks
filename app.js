@@ -1,6 +1,5 @@
 const normalizeText = (value) => String(value || "").toLowerCase().replace(/\s+/g, " ").trim();
 const SHOP_DATA_URL = "data/shop.json";
-const CONTACT_EMAIL = "spacerocks.club@gmail.com";
 const SECTION_TITLES = {
   home: "Spacerocks | Meteorite Shop, Collection, and Adventures",
   shop: "Shop | Spacerocks",
@@ -79,17 +78,6 @@ function buildMetbullLine(item) {
   return parts.join(" | ");
 }
 
-function buildInquiryHref(item) {
-  const subject = `Inquiry - ${item.title || item.name || "Spacerocks listing"}`;
-  const body = [
-    "Hello Spacerocks,",
-    "",
-    `I am interested in ${item.title || item.name || "this listing"}.`,
-    "Please send current availability, provenance, price, and shipping details."
-  ].join("\n");
-  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-}
-
 function renderShopImage(item) {
   const image = Array.isArray(item.images) ? item.images[0] : null;
   const media = createElement("div", "media offer-media");
@@ -145,9 +133,6 @@ function renderShopCard(item) {
     content.append(createElement("p", "provenance-note", item.provenance));
   }
 
-  const button = createElement("a", item.featured ? "button button-primary" : "button", status === "sold" ? "Ask about similar" : "Request dossier");
-  button.href = buildInquiryHref(item);
-  content.append(button);
   card.append(content);
   return card;
 }
