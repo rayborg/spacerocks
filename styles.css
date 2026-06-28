@@ -232,19 +232,19 @@ h3 {
 h1 {
   max-width: 15ch;
   margin-bottom: 1.15rem;
-  font-size: clamp(3.4rem, 9.4vw, 7.85rem);
-  letter-spacing: -0.085em;
+  font-size: clamp(2.7rem, 5.4vw, 5.6rem);
+  letter-spacing: -0.06em;
 }
 
 h2 {
   margin-bottom: 0.75rem;
-  font-size: clamp(2.2rem, 5vw, 4.7rem);
-  letter-spacing: -0.065em;
+  font-size: clamp(1.9rem, 3.2vw, 3.45rem);
+  letter-spacing: -0.045em;
 }
 
 h3 {
   margin-bottom: 0.7rem;
-  font-size: clamp(1.24rem, 2vw, 1.7rem);
+  font-size: clamp(1.15rem, 1.45vw, 1.48rem);
   letter-spacing: -0.03em;
 }
 
@@ -934,7 +934,7 @@ code {
 .contact-panel h2 {
   max-width: 18ch;
   margin-bottom: 0.75rem;
-  font-size: clamp(2.15rem, 5vw, 4.2rem);
+  font-size: clamp(1.9rem, 3.2vw, 3.35rem);
 }
 
 .contact-panel p:last-child {
@@ -957,7 +957,7 @@ code {
 .admin-intro h1 {
   max-width: 15ch;
   margin-bottom: 1rem;
-  font-size: clamp(3rem, 8vw, 6.6rem);
+  font-size: clamp(2.6rem, 5vw, 5.2rem);
 }
 
 .admin-intro p {
