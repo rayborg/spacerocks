@@ -17,7 +17,7 @@ Last updated: 2026-06-27
 
 - Build a new low-maintenance static website for Spacerocks.
 - Migrate the useful content and imagery from the old Google Site into a cleaner, modern, GitHub Pages-hosted site.
-- Present Spacerocks as a personal meteorite/space-rock collection, inquiry shop, and story site, not as a seller-inventory scraper.
+- Present Spacerocks as a personal meteorite/space-rock collection, sale-listing shop, and story site, not as a seller-inventory scraper.
 - Keep the public site static: HTML, CSS, optional vanilla JavaScript, generated JSON, and a Python stdlib shop builder run locally or by GitHub Actions.
 - Make the shop easy to update by uploading an `inventory/shop/<slug>/item.json` file plus images in the same folder.
 - Enrich shop listings from the Meteoritical Bulletin Database by exact meteorite `name`, with cached successes and failures.
@@ -75,7 +75,7 @@ Distilled from subagent reference-site research:
 - No package manager, bundler, framework, or legacy scraper is needed for the Spacerocks site.
 - `scripts/build_shop.py` uses only Python stdlib and reads `inventory/shop/**/item.json` to generate `data/shop.json`.
 - `data/metbull-cache.json` stores MetBull lookup results keyed by exact official `name`; failures are cached to avoid hammering MetBull on 10-minute schedules.
-- `admin/new-listing.html` is a static helper that drafts JSON and folder names. It cannot upload or commit to GitHub without auth/backend.
+- `admin/new-listing.html` is a noindex, admin-only static helper that copies or downloads item data. It cannot upload or commit to GitHub without auth/backend.
 - `.github/workflows/build-shop.yml` runs on relevant pushes, manual dispatch, and every 10 minutes, then commits only generated shop JSON/cache if they changed.
 - Keep copy hand-authored and section-based rather than data-driven.
 - Use relative asset paths so the site works at the GitHub Pages project URL `/spacerocks/`.

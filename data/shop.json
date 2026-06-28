@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-27T23:54:53Z",
+  "generated_at": "2026-06-28T04:27:05Z",
   "items": [
     {
       "badges": [
@@ -36,7 +36,7 @@
         "status": "ok"
       },
       "name": "Aguas Zarcas",
-      "provenance": "Prepared as a visual puzzle set with Spacerocks fall-story notes and dossier available by inquiry.",
+      "provenance": "Prepared as a visual puzzle set with Spacerocks fall-story notes and dossier available before purchase.",
       "slug": "aguas-zarcas-cosmic-5pc-puzzle",
       "status": "available",
       "title": "Aguas Zarcas Cosmic 5pc Puzzle",
@@ -80,7 +80,7 @@
       "name": "Aguas Zarcas",
       "provenance": "Panel-format story presentation with photo and note packet available before any sale discussion.",
       "slug": "aguas-zarcas-hammerstone-panel",
-      "status": "inquiry",
+      "status": "available",
       "title": "Aguas Zarcas Hammerstone Panel",
       "type": "Carbonaceous chondrite fall"
     }

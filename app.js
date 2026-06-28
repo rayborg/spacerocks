@@ -11,7 +11,7 @@ const SECTION_TITLES = {
 
 const statusLabels = {
   available: "Available",
-  inquiry: "Inquiry",
+  "coming-soon": "Coming soon",
   hold: "On hold",
   sold: "Sold"
 };
@@ -50,8 +50,13 @@ function formatWeight(value) {
 }
 
 function formatPrice(value) {
-  if (typeof value !== "number" || !Number.isFinite(value)) return "By inquiry";
+  if (typeof value !== "number" || !Number.isFinite(value)) return "Price pending";
   return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+}
+
+function getCheckoutUrl(item) {
+  const url = String(item.checkout_url || "").trim();
+  return /^https?:\/\//i.test(url) ? url : "";
 }
 
 function addSpec(list, label, value) {
@@ -103,7 +108,8 @@ function renderShopImage(item) {
 }
 
 function renderShopCard(item) {
-  const status = item.status || "inquiry";
+  const status = item.status || "available";
+  const checkoutUrl = getCheckoutUrl(item);
   const card = createElement("article", "offer-card");
   if (item.featured) card.classList.add("featured-offer");
   card.classList.add(`is-${status}`);
@@ -116,7 +122,7 @@ function renderShopCard(item) {
   (item.badges || []).slice(0, 4).forEach((badge) => badgeRow.append(makeBadge(badge)));
 
   const title = createElement("h3", null, item.title || item.name || "Spacerocks listing");
-  const description = createElement("p", null, item.description || "Contact Spacerocks for current details and provenance notes.");
+  const description = createElement("p", null, item.description || "Details and provenance notes are being prepared.");
 
   const specs = createElement("dl", "spec-list");
   addSpec(specs, "Mass", formatWeight(item.weight_g));
@@ -131,6 +137,14 @@ function renderShopCard(item) {
 
   if (item.provenance) {
     content.append(createElement("p", "provenance-note", item.provenance));
+  }
+
+  if (checkoutUrl && status === "available") {
+    const action = createElement("a", "button button-primary", item.checkout_label || "Buy now");
+    action.href = checkoutUrl;
+    action.target = "_blank";
+    action.rel = "noopener noreferrer";
+    content.append(action);
   }
 
   card.append(content);
@@ -166,7 +180,7 @@ async function setupShopData() {
       const empty = createElement("article", "offer-card compact-offer shop-empty");
       const content = createElement("div", "card-content");
       content.append(
-        makeBadge("Inventory pending", "badge-status-inquiry"),
+        makeBadge("Inventory pending", "badge-status-coming-soon"),
         createElement("h3", null, "No generated listings yet"),
         createElement("p", null, "Add an item folder under inventory/shop and the next build will publish it here.")
       );

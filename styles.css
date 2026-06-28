@@ -484,7 +484,7 @@ code {
   text-transform: uppercase;
 }
 
-.badge-inquiry {
+.badge-sale {
   border-color: rgba(159, 207, 157, 0.5);
   color: var(--green);
 }
@@ -589,18 +589,6 @@ code {
   font-size: 0.92rem;
 }
 
-.helper-link {
-  border-bottom: 1px solid rgba(239, 183, 86, 0.45);
-  color: var(--gold);
-  font-size: 0.88rem;
-  font-weight: 850;
-  text-decoration: none;
-}
-
-.helper-link:hover {
-  border-bottom-color: currentColor;
-}
-
 .offer-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -635,6 +623,7 @@ code {
 }
 
 .offer-card.is-sold .offer-media,
+.offer-card.is-coming-soon .offer-media,
 .offer-card.is-hold .offer-media {
   opacity: 0.68;
 }
@@ -645,7 +634,7 @@ code {
   color: #dcffd8;
 }
 
-.badge-status-inquiry {
+.badge-status-coming-soon {
   border-color: rgba(239, 183, 86, 0.5);
   background: rgba(239, 183, 86, 0.13);
   color: #ffe0a0;
@@ -1008,7 +997,7 @@ code {
 }
 
 .listing-form,
-.preview-panel {
+.admin-output {
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--panel);
@@ -1061,29 +1050,31 @@ code {
   color: var(--text);
 }
 
-.preview-panel {
+.admin-output {
   position: sticky;
   top: 1rem;
 }
 
-.folder-preview {
-  margin-bottom: 0.8rem;
-  color: var(--text);
-  font-weight: 850;
+.admin-output h2 {
+  max-width: 18ch;
+  margin-bottom: 0.75rem;
+  font-size: clamp(1.6rem, 2.5vw, 2.5rem);
 }
 
-.json-preview {
-  overflow: auto;
-  max-height: 620px;
+.admin-output p:last-child {
+  margin-bottom: 0;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
   margin: 1rem 0 0;
-  border: 1px solid rgba(239, 183, 86, 0.22);
-  border-radius: var(--radius-md);
-  background: rgba(0, 0, 0, 0.3);
-  color: #f8ead2;
-  font-size: 0.88rem;
-  line-height: 1.55;
-  padding: 1rem;
-  white-space: pre-wrap;
+}
+
+.admin-status {
+  color: var(--muted);
+  font-size: 0.92rem;
 }
 
 .site-footer {
@@ -1172,7 +1163,7 @@ code {
     grid-template-columns: 1fr;
   }
 
-  .preview-panel {
+  .admin-output {
     position: static;
   }
 

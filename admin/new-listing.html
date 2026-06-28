@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Static helper for drafting Spacerocks inventory item.json files.">
-  <title>Spacerocks Listing Helper</title>
+  <meta name="description" content="Admin-only static helper for drafting Spacerocks inventory item data.">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Spacerocks Admin Listing Helper</title>
   <link rel="stylesheet" href="../styles.css">
 </head>
 <body class="admin-page">
@@ -16,20 +17,20 @@
         <span class="brand-mark" aria-hidden="true">S</span>
         <span>
           <strong>Spacerocks</strong>
-          <small>Listing helper</small>
+          <small>Admin helper</small>
         </span>
       </a>
       <div class="nav-links">
-        <a href="../index.html#shop">Back to shop</a>
+        <a href="../index.html#shop">Back to site</a>
       </div>
     </nav>
   </header>
 
   <main id="main" class="admin-main">
     <section class="section-block admin-intro" aria-labelledby="helper-title">
-      <p class="eyebrow">Inventory helper</p>
-      <h1 id="helper-title">Draft a shop item.json without memorizing the fields.</h1>
-      <p>This page is static. It cannot upload images, authenticate to GitHub, or commit files. Use it to draft JSON, then upload or commit the item folder in GitHub.</p>
+      <p class="eyebrow">Admin-only inventory helper</p>
+      <h1 id="helper-title">Prepare shop item data without memorizing the fields.</h1>
+      <p>This static utility is not linked from the public shop and does not publish changes. Use it only when preparing repository inventory updates.</p>
     </section>
 
     <section class="admin-layout" aria-label="New listing builder">
@@ -48,7 +49,7 @@
             <input name="weight_g" type="number" min="0" step="0.001" placeholder="3.2">
           </label>
           <label>
-            <span>Price (USD, blank for inquiry)</span>
+            <span>Price (USD, blank until priced)</span>
             <input name="price_usd" type="number" min="0" step="0.01" placeholder="">
           </label>
         </div>
@@ -56,8 +57,8 @@
           <label>
             <span>Status</span>
             <select name="status">
-              <option value="available">Available</option>
-              <option value="inquiry" selected>Inquiry</option>
+              <option value="available" selected>Available</option>
+              <option value="coming-soon">Coming soon</option>
               <option value="hold">Hold</option>
               <option value="sold">Sold</option>
             </select>
@@ -79,33 +80,30 @@
           <span>Badges, comma separated</span>
           <input name="badges" type="text" autocomplete="off" placeholder="Carbonaceous, fresh fall, display">
         </label>
+        <label>
+          <span>Checkout URL</span>
+          <input name="checkout_url" type="url" autocomplete="off" placeholder="PayPal, Link, or hosted checkout URL">
+        </label>
       </form>
 
-      <aside class="preview-panel" aria-live="polite">
-        <div>
-          <p class="eyebrow">Suggested folder</p>
-          <p class="folder-preview"><code id="folderPreview">inventory/shop/new-listing/</code></p>
-          <p>Put this preview in <code>item.json</code>. Upload images into the same folder as <code>front.jpg</code>, <code>back.jpg</code>, <code>detail-1.jpg</code>, or add explicit image paths to the JSON.</p>
-          <p>After the files are committed, GitHub Actions rebuilds <code>data/shop.json</code> on push and on the 10-minute schedule.</p>
+      <aside class="admin-output" aria-live="polite">
+        <p class="eyebrow">Admin output</p>
+        <h2>Prepare item data for inventory updates.</h2>
+        <p>Use the generated file only in the internal repository workflow. This page cannot authenticate, upload images, commit files, or publish listings.</p>
+        <div class="admin-actions">
+          <button class="button button-primary" type="button" id="copyJson">Copy item data</button>
+          <button class="button" type="button" id="downloadJson">Download item.json</button>
         </div>
-        <pre class="json-preview" id="jsonPreview" tabindex="0"></pre>
+        <p class="admin-status" id="helperStatus">Ready to prepare item data.</p>
       </aside>
     </section>
   </main>
 
   <script>
     const form = document.getElementById("listingForm");
-    const folderPreview = document.getElementById("folderPreview");
-    const jsonPreview = document.getElementById("jsonPreview");
-
-    function slugify(value) {
-      return String(value || "new-listing")
-        .toLowerCase()
-        .normalize("NFKD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "") || "new-listing";
-    }
+    const copyJson = document.getElementById("copyJson");
+    const downloadJson = document.getElementById("downloadJson");
+    const helperStatus = document.getElementById("helperStatus");
 
     function numberOrNull(value) {
       if (value === "") return null;
@@ -113,15 +111,26 @@
       return Number.isFinite(number) ? number : null;
     }
 
-    function updatePreview() {
+    function cleanItem(item) {
+      const cleaned = {};
+      Object.entries(item).forEach(([key, value]) => {
+        if (value === "" || value === null) return;
+        if (Array.isArray(value) && value.length === 0) return;
+        cleaned[key] = value;
+      });
+      return cleaned;
+    }
+
+    function buildItem() {
       const data = new FormData(form);
       const title = String(data.get("title") || "").trim();
       const name = String(data.get("name") || "").trim();
+      const checkoutUrl = String(data.get("checkout_url") || "").trim();
       const badges = String(data.get("badges") || "")
         .split(",")
         .map((badge) => badge.trim())
         .filter(Boolean);
-      const item = {
+      const item = cleanItem({
         title,
         name,
         weight_g: numberOrNull(data.get("weight_g")),
@@ -132,18 +141,47 @@
         classification: "",
         provenance: String(data.get("provenance") || "").trim(),
         badges,
+        checkout_url: checkoutUrl,
+        checkout_label: checkoutUrl ? "Buy now" : "",
         image_order: ["front.jpg", "back.jpg", "detail-1.jpg"],
         images: [],
         featured: false,
         metbull_lookup: Boolean(name)
-      };
+      });
 
-      folderPreview.textContent = `inventory/shop/${slugify(title || name)}/`;
-      jsonPreview.textContent = `${JSON.stringify(item, null, 2)}\n`;
+      return item;
     }
 
-    form.addEventListener("input", updatePreview);
-    updatePreview();
+    function itemJson() {
+      return `${JSON.stringify(buildItem(), null, 2)}\n`;
+    }
+
+    function updateStatus() {
+      helperStatus.textContent = "Ready to copy or download item data.";
+    }
+
+    copyJson.addEventListener("click", async () => {
+      if (!navigator.clipboard) {
+        helperStatus.textContent = "Copy is unavailable in this browser. Use the download action instead.";
+        return;
+      }
+      await navigator.clipboard.writeText(itemJson());
+      helperStatus.textContent = "Item data copied.";
+    });
+
+    downloadJson.addEventListener("click", () => {
+      const blob = new Blob([itemJson()], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "item.json";
+      link.click();
+      URL.revokeObjectURL(url);
+      helperStatus.textContent = "item.json downloaded.";
+    });
+
+    form.addEventListener("input", updateStatus);
+    updateStatus();
   </script>
 </body>
 </html>

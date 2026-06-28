@@ -10,7 +10,7 @@ Expected public URL after GitHub Pages is enabled: `https://rayborg.github.io/sp
 
 ## Site Sections
 
-- `Shop`: generated inquiry listings from `inventory/shop/**`.
+- `Shop`: generated sale listings from `inventory/shop/**`.
 - `Collection`: specimen highlights and collection overview.
 - `Expeditions`: field trips, hunting stories, and travel context.
 - `Stories`: featured meteorite stories such as Aguas Zarcas, Santa Filomena, and the 190 g puzzle rock.
@@ -55,12 +55,13 @@ Minimal `item.json` fields are:
   "name": "Aguas Zarcas",
   "weight_g": 3.2,
   "price_usd": null,
-  "status": "inquiry",
+  "status": "available",
   "description": "Short collector-facing description.",
   "type": "Carbonaceous chondrite fall",
   "classification": "CM2",
   "provenance": "Source, packet, or field notes.",
   "badges": ["Carbonaceous", "MetBull"],
+  "checkout_url": "",
   "image_order": ["front.jpg", "back.jpg"],
   "images": [],
   "featured": false,
@@ -68,7 +69,9 @@ Minimal `item.json` fields are:
 }
 ```
 
-Images can be uploaded into the item folder or listed explicitly in `images` as paths such as `assets/images/spacerock/source-puzzle-190g.png`. The static helper at `admin/new-listing.html` drafts JSON and folder names, but it cannot upload or commit files to GitHub because this is a static Pages site with no authenticated backend.
+Images can be uploaded into the item folder or listed explicitly in `images` as paths such as `assets/images/spacerock/source-puzzle-190g.png`. Use `status` values of `available`, `coming-soon`, `hold`, or `sold`. Add `checkout_url` when a PayPal, Link, or hosted checkout page is ready for a listing.
+
+The static helper at `admin/new-listing.html` is an admin-only utility for copying or downloading item data. It cannot upload, authenticate, commit files to GitHub, or publish listings because this is a static Pages site with no backend.
 
 `scripts/build_shop.py` uses only Python stdlib. It writes `data/shop.json`, looks up exact Meteoritical Bulletin matches by `name`, caches successes and failures in `data/metbull-cache.json`, and keeps building with local fields if MetBull is unavailable.
 

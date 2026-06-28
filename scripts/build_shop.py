@@ -29,7 +29,7 @@ DATA_DIR = ROOT / "data"
 SHOP_JSON = DATA_DIR / "shop.json"
 METBULL_CACHE = DATA_DIR / "metbull-cache.json"
 
-ALLOWED_STATUSES = {"available", "inquiry", "hold", "sold"}
+ALLOWED_STATUSES = {"available", "coming-soon", "hold", "sold"}
 IMAGE_EXTENSIONS = {".avif", ".gif", ".jpeg", ".jpg", ".png", ".webp"}
 METBULL_SEARCH_URL = "https://www.lpi.usra.edu/meteor/metbull.php"
 METBULL_DETAIL_URL = "https://www.lpi.usra.edu/meteor/metbull.php?code={code}"
@@ -173,6 +173,17 @@ def to_string_list(value: Any) -> list[str]:
     if isinstance(value, list):
         return [normalize_space(item) for item in value if normalize_space(item)]
     return []
+
+
+def to_http_url(value: Any, field: str, slug: str) -> str | None:
+    url = normalize_space(value)
+    if not url:
+        return None
+    parsed = parse.urlparse(url)
+    if parsed.scheme not in {"http", "https"} or not parsed.netloc:
+        warn(f"{slug}: ignoring invalid {field!r}: {value!r}")
+        return None
+    return url
 
 
 def title_from_slug(slug: str) -> str:
@@ -402,10 +413,12 @@ def normalize_item(item_dir: Path, cache: dict[str, Any]) -> dict[str, Any]:
 
     title = normalize_space(raw.get("title")) or normalize_space(raw.get("name")) or title_from_slug(slug)
     meteorite_name = normalize_space(raw.get("name"))
-    status = normalize_space(raw.get("status") or "inquiry").lower()
+    status = normalize_space(raw.get("status") or "available").lower().replace("_", "-")
+    if status == "coming soon":
+        status = "coming-soon"
     if status not in ALLOWED_STATUSES:
-        warn(f"{slug}: unknown status {status!r}; using 'inquiry'")
-        status = "inquiry"
+        warn(f"{slug}: unknown status {status!r}; using 'available'")
+        status = "available"
 
     metbull_enabled = to_bool(raw.get("metbull_lookup"), default=bool(meteorite_name))
     metbull_entry: dict[str, Any] | None = None
@@ -430,6 +443,8 @@ def normalize_item(item_dir: Path, cache: dict[str, Any]) -> dict[str, Any]:
         "classification": classification or None,
         "provenance": normalize_space(raw.get("provenance")),
         "badges": to_string_list(raw.get("badges")),
+        "checkout_url": to_http_url(raw.get("checkout_url"), "checkout_url", slug),
+        "checkout_label": normalize_space(raw.get("checkout_label")),
         "images": collect_images(item_dir, raw, title),
         "featured": to_bool(raw.get("featured"), default=False),
         "metbull_lookup": {
