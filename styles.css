@@ -19,7 +19,7 @@
   --radius-lg: 30px;
   --radius-md: 20px;
   --radius-sm: 12px;
-  --max: 1180px;
+  --page-gutter: clamp(1rem, 2.4vw, 2.75rem);
 }
 
 * {
@@ -106,12 +106,13 @@ button {
 .site-header,
 main,
 .site-footer {
-  width: min(100% - 2rem, var(--max));
-  margin-inline: auto;
+  width: 100%;
+  margin-inline: 0;
+  padding-inline: var(--page-gutter);
 }
 
 .site-header {
-  padding: 1rem 0 3rem;
+  padding-block: 1rem 3rem;
 }
 
 .top-nav {
@@ -229,7 +230,7 @@ h3 {
 }
 
 h1 {
-  max-width: 12ch;
+  max-width: 15ch;
   margin-bottom: 1.15rem;
   font-size: clamp(3.4rem, 9.4vw, 7.85rem);
   letter-spacing: -0.085em;
@@ -256,7 +257,7 @@ code {
 }
 
 .hero-lede {
-  max-width: 44rem;
+  max-width: 58rem;
   color: #d8cbbc;
   font-size: clamp(1.05rem, 1.7vw, 1.28rem);
 }
@@ -313,7 +314,7 @@ code {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.75rem;
-  max-width: 48rem;
+  max-width: 64rem;
   margin: 2rem 0 0;
 }
 
@@ -397,7 +398,7 @@ code {
 
 .hero-image-main {
   inset: 0 0 auto auto;
-  width: min(100%, 520px);
+  width: min(100%, 680px);
   height: 620px;
   transform: rotate(2.5deg);
 }
@@ -515,7 +516,7 @@ code {
 }
 
 .section-heading {
-  max-width: 820px;
+  max-width: 1040px;
   margin-bottom: 1.5rem;
 }
 
@@ -547,7 +548,7 @@ code {
 }
 
 .shop-generated-note {
-  max-width: 48rem;
+  max-width: 72rem;
   margin: 0;
   font-size: 0.92rem;
 }
@@ -566,7 +567,7 @@ code {
 
 .offer-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
 }
 
@@ -758,7 +759,7 @@ code {
 
 .passport-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
   gap: 0.95rem;
 }
 
@@ -899,7 +900,7 @@ code {
 
 .journal-strip {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1rem;
   margin-top: 1rem;
 }
@@ -911,7 +912,7 @@ code {
 
 .trust-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1rem;
 }
 
@@ -931,13 +932,13 @@ code {
 }
 
 .contact-panel h2 {
-  max-width: 13ch;
+  max-width: 18ch;
   margin-bottom: 0.75rem;
   font-size: clamp(2.15rem, 5vw, 4.2rem);
 }
 
 .contact-panel p:last-child {
-  max-width: 52rem;
+  max-width: 72rem;
   margin-bottom: 0;
 }
 
@@ -954,13 +955,13 @@ code {
 }
 
 .admin-intro h1 {
-  max-width: 12ch;
+  max-width: 15ch;
   margin-bottom: 1rem;
   font-size: clamp(3rem, 8vw, 6.6rem);
 }
 
 .admin-intro p {
-  max-width: 48rem;
+  max-width: 72rem;
 }
 
 .admin-layout {
@@ -1054,7 +1055,7 @@ code {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 0.75rem;
-  padding: 2rem 0 3rem;
+  padding-block: 2rem 3rem;
   color: var(--muted);
   font-size: 0.9rem;
 }
@@ -1094,10 +1095,8 @@ code {
 }
 
 @media (max-width: 820px) {
-  .site-header,
-  main,
-  .site-footer {
-    width: min(100% - 1rem, var(--max));
+  :root {
+    --page-gutter: 0.5rem;
   }
 
   .site-header {
