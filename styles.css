@@ -270,7 +270,7 @@ h1,
 h2,
 h3 {
   line-height: 1.05;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 h1 {
@@ -672,6 +672,7 @@ code {
   max-width: 100%;
   min-width: 2rem;
   justify-content: center;
+  margin-inline-start: 0.45rem;
   border: 1px solid rgba(159, 207, 157, 0.46);
   border-radius: 999px;
   background: rgba(159, 207, 157, 0.12);
@@ -746,6 +747,15 @@ code {
 
 .taxonomy-names span {
   max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.taxonomy-names small {
+  flex-basis: 100%;
+  max-width: 100%;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
   overflow-wrap: anywhere;
 }
 

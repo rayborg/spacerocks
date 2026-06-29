@@ -533,8 +533,9 @@ def display_meteorite_name(item: dict[str, Any]) -> str:
 def build_taxonomy_index(items: list[dict[str, Any]]) -> dict[str, Any]:
     class_map: dict[str, Any] = {}
     metbull_items = 0
+    indexed_items = [item for item in items if item.get("status") == "available"]
 
-    for item in items:
+    for item in indexed_items:
         taxonomy = item.get("taxonomy", {})
         class_name = normalize_space(taxonomy.get("class")) or "Unclassified meteorite"
         type_name = normalize_space(taxonomy.get("type")) or "Classification pending"
@@ -597,8 +598,9 @@ def build_taxonomy_index(items: list[dict[str, Any]]) -> dict[str, Any]:
         classes.append({"name": class_entry["name"], "count": class_entry["count"], "types": types})
 
     return {
-        "source": "Meteoritical Bulletin Database exact-name classifications; listing classification is used only when the database is unavailable.",
-        "item_count": len(items),
+        "source": "Meteoritical Bulletin Database exact-name classifications; listing classification is used only when no database classification is available.",
+        "item_count": len(indexed_items),
+        "listing_count": len(items),
         "metbull_item_count": metbull_items,
         "classes": classes,
     }

@@ -103,6 +103,9 @@ function renderTaxonomyName(entry) {
   const item = createElement("li");
   const label = entry.name || "Unnamed meteorite";
   const sourceUrl = validHttpUrl(entry.source_url);
+  const listingTitles = (entry.listings || [])
+    .map((listing) => listing.title)
+    .filter(Boolean);
   const nameNode = sourceUrl ? createElement("a", null, label) : createElement("strong", null, label);
 
   if (sourceUrl) {
@@ -112,6 +115,9 @@ function renderTaxonomyName(entry) {
   }
 
   item.append(nameNode, createElement("span", null, countText(entry.count, "listing")));
+  if (listingTitles.length) {
+    item.append(createElement("small", null, listingTitles.join(" / ")));
+  }
   return item;
 }
 

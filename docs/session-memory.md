@@ -74,7 +74,7 @@ Distilled from subagent reference-site research:
 - Primary files should remain `index.html`, `styles.css`, `app.js`, generated `data/shop.json`, and local media under `assets/` or item folders.
 - No package manager, bundler, framework, or legacy scraper is needed for the Spacerocks site.
 - `scripts/build_shop.py` uses only Python stdlib and reads `inventory/shop/**/item.json` to generate `data/shop.json`.
-- The main shop page is a class/type/subtype inventory index first, with counts and meteorite names grouped from Meteoritical Bulletin classifications when available.
+- The main shop page is a class/type/subtype inventory index first, with available-listing counts and meteorite names grouped from Meteoritical Bulletin classifications when available.
 - `data/metbull-cache.json` stores MetBull lookup results keyed by exact official `name`; failures are cached to avoid hammering MetBull on 10-minute schedules.
 - `admin/new-listing.html` is a noindex, admin-only static helper that copies or downloads item data. It cannot upload or commit to GitHub without auth/backend.
 - `.github/workflows/build-shop.yml` runs on relevant pushes, manual dispatch, and every 10 minutes, then commits only generated shop JSON/cache if they changed.

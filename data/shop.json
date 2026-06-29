@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-28T05:08:22Z",
+  "generated_at": "2026-06-29T08:49:23Z",
   "items": [
     {
       "badges": [
@@ -145,7 +145,8 @@
       }
     ],
     "item_count": 2,
+    "listing_count": 2,
     "metbull_item_count": 2,
-    "source": "Meteoritical Bulletin Database exact-name classifications; listing classification is used only when the database is unavailable."
+    "source": "Meteoritical Bulletin Database exact-name classifications; listing classification is used only when no database classification is available."
   }
 }
