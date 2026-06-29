@@ -186,6 +186,67 @@ def to_http_url(value: Any, field: str, slug: str) -> str | None:
     return url
 
 
+def infer_taxonomy(classification: str) -> dict[str, str]:
+    clean = normalize_space(classification)
+    if not clean:
+        return {
+            "class": "Unclassified meteorite",
+            "type": "Classification pending",
+            "subtype": "Pending",
+        }
+
+    lower = clean.lower()
+    token = re.split(r"[\s,(/]+", clean, maxsplit=1)[0].upper()
+
+    chondrite_groups = [
+        (r"^(CI|CM|CO|CV|CK|CR|CH|CB|CY|CL|C)(?=\d|$|[-/])", "Carbonaceous chondrite"),
+        (r"^(LL|L|H)(?=\d|$|[-/])", "Ordinary chondrite"),
+        (r"^(EH|EL)(?=\d|$|[-/])", "Enstatite chondrite"),
+        (r"^R(?=\d|$|[-/])", "Rumuruti chondrite"),
+        (r"^K(?=\d|$|[-/])", "Kakangari chondrite"),
+    ]
+    for pattern, meteorite_type in chondrite_groups:
+        if re.match(pattern, token):
+            return {"class": "Chondrite", "type": meteorite_type, "subtype": clean}
+
+    if lower.startswith("iron") or re.match(r"^(IAB|IC|IIAB|IIC|IID|IIE|IIF|IIG|IIIAB|IIICD|IIIE|IIIF|IVA|IVB)\b", token):
+        meteorite_type = clean.split(",", 1)[1].strip() if "," in clean else "Iron meteorite"
+        return {"class": "Iron meteorite", "type": meteorite_type or "Iron meteorite", "subtype": clean}
+
+    if "pallasite" in lower:
+        return {"class": "Stony-iron meteorite", "type": "Pallasite", "subtype": clean}
+    if "mesosiderite" in lower:
+        return {"class": "Stony-iron meteorite", "type": "Mesosiderite", "subtype": clean}
+
+    achondrite_types = [
+        ("lunar", "Lunar meteorite"),
+        ("martian", "Martian meteorite"),
+        ("shergottite", "Martian meteorite"),
+        ("nakhlite", "Martian meteorite"),
+        ("chassignite", "Martian meteorite"),
+        ("howardite", "HED achondrite"),
+        ("eucrite", "HED achondrite"),
+        ("diogenite", "HED achondrite"),
+        ("aubrite", "Aubrite"),
+        ("angrite", "Angrite"),
+        ("ureilite", "Ureilite"),
+        ("acapulcoite", "Acapulcoite"),
+        ("lodranite", "Lodranite"),
+        ("winonaite", "Winonaite"),
+        ("brachinite", "Brachinite"),
+    ]
+    for keyword, meteorite_type in achondrite_types:
+        if keyword in lower:
+            return {"class": "Achondrite", "type": meteorite_type, "subtype": clean}
+
+    if "chondrite" in lower:
+        return {"class": "Chondrite", "type": "Chondrite", "subtype": clean}
+    if "achondrite" in lower:
+        return {"class": "Achondrite", "type": "Achondrite", "subtype": clean}
+
+    return {"class": "Unclassified meteorite", "type": "Classification pending", "subtype": clean}
+
+
 def title_from_slug(slug: str) -> str:
     return " ".join(part.capitalize() for part in slug.replace("_", "-").split("-") if part)
 
@@ -426,9 +487,12 @@ def normalize_item(item_dir: Path, cache: dict[str, Any]) -> dict[str, Any]:
         metbull_entry = lookup_metbull(meteorite_name, cache)
 
     metbull_record = metbull_entry.get("record", {}) if isinstance(metbull_entry, dict) else {}
-    classification = normalize_space(raw.get("classification")) or normalize_space(
-        metbull_record.get("classification")
-    )
+    metbull_classification = normalize_space(metbull_record.get("classification"))
+    local_classification = normalize_space(raw.get("classification"))
+    classification = metbull_classification or local_classification
+    taxonomy = infer_taxonomy(classification)
+    taxonomy["source"] = "Meteoritical Bulletin Database" if metbull_classification else "Listing classification"
+    taxonomy["classification"] = classification or "Pending"
     item_type = normalize_space(raw.get("type")) or classification
 
     normalized = {
@@ -441,6 +505,7 @@ def normalize_item(item_dir: Path, cache: dict[str, Any]) -> dict[str, Any]:
         "description": normalize_space(raw.get("description")),
         "type": item_type or None,
         "classification": classification or None,
+        "taxonomy": taxonomy,
         "provenance": normalize_space(raw.get("provenance")),
         "badges": to_string_list(raw.get("badges")),
         "checkout_url": to_http_url(raw.get("checkout_url"), "checkout_url", slug),
@@ -458,6 +523,85 @@ def normalize_item(item_dir: Path, cache: dict[str, Any]) -> dict[str, Any]:
         normalized["metbull"] = metbull_record
 
     return {key: value for key, value in normalized.items() if not is_empty_value(value)}
+
+
+def display_meteorite_name(item: dict[str, Any]) -> str:
+    metbull = item.get("metbull", {})
+    return normalize_space(metbull.get("official_name")) or normalize_space(item.get("name")) or normalize_space(item.get("title"))
+
+
+def build_taxonomy_index(items: list[dict[str, Any]]) -> dict[str, Any]:
+    class_map: dict[str, Any] = {}
+    metbull_items = 0
+
+    for item in items:
+        taxonomy = item.get("taxonomy", {})
+        class_name = normalize_space(taxonomy.get("class")) or "Unclassified meteorite"
+        type_name = normalize_space(taxonomy.get("type")) or "Classification pending"
+        subtype_name = normalize_space(taxonomy.get("subtype")) or normalize_space(item.get("classification")) or "Pending"
+        meteorite_name = display_meteorite_name(item) or "Unnamed meteorite"
+        metbull = item.get("metbull", {})
+        source_url = normalize_space(metbull.get("source_url"))
+
+        if taxonomy.get("source") == "Meteoritical Bulletin Database":
+            metbull_items += 1
+
+        class_entry = class_map.setdefault(class_name, {"name": class_name, "count": 0, "types": {}})
+        type_entry = class_entry["types"].setdefault(type_name, {"name": type_name, "count": 0, "subtypes": {}})
+        subtype_entry = type_entry["subtypes"].setdefault(
+            subtype_name,
+            {"name": subtype_name, "count": 0, "names": {}},
+        )
+        name_entry = subtype_entry["names"].setdefault(
+            meteorite_name,
+            {"name": meteorite_name, "count": 0, "source_url": source_url, "listings": []},
+        )
+
+        class_entry["count"] += 1
+        type_entry["count"] += 1
+        subtype_entry["count"] += 1
+        name_entry["count"] += 1
+        if source_url and not name_entry.get("source_url"):
+            name_entry["source_url"] = source_url
+        name_entry["listings"].append(
+            {
+                "slug": item.get("slug"),
+                "title": item.get("title"),
+                "status": item.get("status"),
+            }
+        )
+
+    def sort_key(entry: dict[str, Any]) -> tuple[bool, str]:
+        return (entry["name"].startswith(("Unclassified", "Classification pending", "Pending")), entry["name"].casefold())
+
+    classes = []
+    for class_entry in sorted(class_map.values(), key=sort_key):
+        types = []
+        for type_entry in sorted(class_entry["types"].values(), key=sort_key):
+            subtypes = []
+            for subtype_entry in sorted(type_entry["subtypes"].values(), key=sort_key):
+                names = sorted(subtype_entry["names"].values(), key=lambda entry: entry["name"].casefold())
+                for name_entry in names:
+                    name_entry["listings"] = sorted(
+                        name_entry["listings"],
+                        key=lambda listing: normalize_space(listing.get("title")).casefold(),
+                    )
+                subtypes.append(
+                    {
+                        "name": subtype_entry["name"],
+                        "count": subtype_entry["count"],
+                        "names": names,
+                    }
+                )
+            types.append({"name": type_entry["name"], "count": type_entry["count"], "subtypes": subtypes})
+        classes.append({"name": class_entry["name"], "count": class_entry["count"], "types": types})
+
+    return {
+        "source": "Meteoritical Bulletin Database exact-name classifications; listing classification is used only when the database is unavailable.",
+        "item_count": len(items),
+        "metbull_item_count": metbull_items,
+        "classes": classes,
+    }
 
 
 def summarize_lookup_status(items: list[dict[str, Any]]) -> dict[str, int]:
@@ -489,6 +633,7 @@ def build_shop_data(cache: dict[str, Any]) -> dict[str, Any]:
     items.sort(key=lambda item: (not item.get("featured", False), item.get("title", "").casefold()))
     return {
         "generated_at": now_utc(),
+        "taxonomy": build_taxonomy_index(items),
         "lookup_status": summarize_lookup_status(items),
         "items": items,
     }

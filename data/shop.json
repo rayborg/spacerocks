@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-28T04:27:05Z",
+  "generated_at": "2026-06-28T05:08:22Z",
   "items": [
     {
       "badges": [
@@ -39,6 +39,13 @@
       "provenance": "Prepared as a visual puzzle set with Spacerocks fall-story notes and dossier available before purchase.",
       "slug": "aguas-zarcas-cosmic-5pc-puzzle",
       "status": "available",
+      "taxonomy": {
+        "class": "Chondrite",
+        "classification": "CM2",
+        "source": "Meteoritical Bulletin Database",
+        "subtype": "CM2",
+        "type": "Carbonaceous chondrite"
+      },
       "title": "Aguas Zarcas Cosmic 5pc Puzzle",
       "type": "Carbonaceous chondrite fall",
       "weight_g": 188.5
@@ -81,6 +88,13 @@
       "provenance": "Panel-format story presentation with photo and note packet available before any sale discussion.",
       "slug": "aguas-zarcas-hammerstone-panel",
       "status": "available",
+      "taxonomy": {
+        "class": "Chondrite",
+        "classification": "CM2",
+        "source": "Meteoritical Bulletin Database",
+        "subtype": "CM2",
+        "type": "Carbonaceous chondrite"
+      },
       "title": "Aguas Zarcas Hammerstone Panel",
       "type": "Carbonaceous chondrite fall"
     }
@@ -91,5 +105,47 @@
     "not_found": 0,
     "ok": 2,
     "skipped": 0
+  },
+  "taxonomy": {
+    "classes": [
+      {
+        "count": 2,
+        "name": "Chondrite",
+        "types": [
+          {
+            "count": 2,
+            "name": "Carbonaceous chondrite",
+            "subtypes": [
+              {
+                "count": 2,
+                "name": "CM2",
+                "names": [
+                  {
+                    "count": 2,
+                    "listings": [
+                      {
+                        "slug": "aguas-zarcas-cosmic-5pc-puzzle",
+                        "status": "available",
+                        "title": "Aguas Zarcas Cosmic 5pc Puzzle"
+                      },
+                      {
+                        "slug": "aguas-zarcas-hammerstone-panel",
+                        "status": "available",
+                        "title": "Aguas Zarcas Hammerstone Panel"
+                      }
+                    ],
+                    "name": "Aguas Zarcas",
+                    "source_url": "https://www.lpi.usra.edu/meteor/metbull.php?code=69696"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "item_count": 2,
+    "metbull_item_count": 2,
+    "source": "Meteoritical Bulletin Database exact-name classifications; listing classification is used only when the database is unavailable."
   }
 }

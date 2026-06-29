@@ -42,6 +42,14 @@ body {
   line-height: 1.5;
 }
 
+body,
+button,
+input,
+select,
+textarea {
+  overflow-wrap: break-word;
+}
+
 body::before {
   position: fixed;
   inset: 0;
@@ -262,6 +270,7 @@ h1,
 h2,
 h3 {
   line-height: 1.05;
+  overflow-wrap: anywhere;
 }
 
 h1 {
@@ -302,6 +311,7 @@ code {
   display: flex;
   flex-wrap: wrap;
   gap: 0.7rem;
+  min-width: 0;
 }
 
 .hero-actions {
@@ -312,6 +322,7 @@ code {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  max-width: 100%;
   min-height: 2.8rem;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
@@ -320,8 +331,10 @@ code {
   font-weight: 850;
   line-height: 1.1;
   padding: 0.78rem 1.08rem;
+  text-align: center;
   text-decoration: none;
   transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  white-space: normal;
 }
 
 .button:hover {
@@ -357,6 +370,8 @@ code {
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.045);
+  min-width: 0;
+  overflow-wrap: anywhere;
   padding: 1rem;
 }
 
@@ -365,12 +380,14 @@ code {
   font-size: clamp(1.6rem, 3vw, 2.35rem);
   font-weight: 950;
   line-height: 1;
+  overflow-wrap: anywhere;
 }
 
 .hero-metrics dd {
   margin: 0.35rem 0 0;
   color: var(--muted);
   font-size: 0.88rem;
+  overflow-wrap: anywhere;
 }
 
 .hero-media {
@@ -471,6 +488,7 @@ code {
   display: inline-flex;
   align-items: center;
   width: fit-content;
+  max-width: 100%;
   min-height: 1.75rem;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
@@ -479,9 +497,12 @@ code {
   font-size: 0.72rem;
   font-weight: 900;
   letter-spacing: 0.07em;
-  line-height: 1;
+  line-height: 1.18;
+  overflow-wrap: anywhere;
   padding: 0.42rem 0.62rem;
+  text-align: center;
   text-transform: uppercase;
+  white-space: normal;
 }
 
 .badge-sale {
@@ -527,6 +548,8 @@ code {
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.045);
+  min-width: 0;
+  overflow-wrap: anywhere;
   padding: 1.15rem;
 }
 
@@ -589,6 +612,151 @@ code {
   font-size: 0.92rem;
 }
 
+.taxonomy-index {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 1.6rem;
+}
+
+.taxonomy-source {
+  max-width: 72rem;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.taxonomy-class {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(159, 185, 255, 0.12), transparent 19rem),
+    var(--panel);
+  box-shadow: var(--shadow);
+  min-width: 0;
+  padding: clamp(1rem, 3vw, 1.4rem);
+  overflow-wrap: anywhere;
+}
+
+.taxonomy-class-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.48fr);
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+
+.taxonomy-class-heading > *,
+.taxonomy-type,
+.taxonomy-subtype,
+.taxonomy-names,
+.taxonomy-names li {
+  min-width: 0;
+}
+
+.taxonomy-class-heading h3,
+.shop-listings-heading h3 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3vw, 2.6rem);
+}
+
+.taxonomy-class-heading p:last-child {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.taxonomy-class h3 span,
+.taxonomy-type h4 span,
+.taxonomy-subtype h5 span {
+  display: inline-flex;
+  max-width: 100%;
+  min-width: 2rem;
+  justify-content: center;
+  border: 1px solid rgba(159, 207, 157, 0.46);
+  border-radius: 999px;
+  background: rgba(159, 207, 157, 0.12);
+  color: #dcffd8;
+  font-size: 0.78em;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+  padding: 0 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+  white-space: normal;
+}
+
+.taxonomy-type {
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+}
+
+.taxonomy-type + .taxonomy-type {
+  margin-top: 1rem;
+}
+
+.taxonomy-type h4,
+.taxonomy-subtype h5 {
+  margin: 0 0 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.taxonomy-subtype {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.035);
+  padding: 0.85rem;
+}
+
+.taxonomy-subtype + .taxonomy-subtype {
+  margin-top: 0.75rem;
+}
+
+.taxonomy-names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.taxonomy-names li {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+  max-width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--muted);
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+  padding: 0.42rem 0.65rem;
+}
+
+.taxonomy-names a,
+.taxonomy-names strong {
+  color: var(--text);
+  max-width: 100%;
+  font-weight: 850;
+  overflow-wrap: anywhere;
+  text-decoration: none;
+}
+
+.taxonomy-names span {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.taxonomy-names a:hover {
+  color: var(--gold);
+}
+
+.shop-listings-heading {
+  margin: 0 0 1rem;
+}
+
 .offer-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -602,6 +770,8 @@ code {
   border-radius: var(--radius-lg);
   background: var(--panel);
   box-shadow: var(--shadow);
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .offer-card {
@@ -657,6 +827,7 @@ code {
   display: flex;
   flex: 1;
   flex-direction: column;
+  min-width: 0;
   padding: 1.2rem;
 }
 
@@ -674,14 +845,16 @@ code {
 .passport-list,
 .adventure-stats {
   margin: 1rem 0 1.2rem;
+  min-width: 0;
 }
 
 .spec-list div,
 .passport-list div,
 .adventure-stats div {
   display: grid;
-  grid-template-columns: 6.4rem minmax(0, 1fr);
+  grid-template-columns: minmax(4.75rem, 6.4rem) minmax(0, 1fr);
   gap: 0.7rem;
+  min-width: 0;
   padding: 0.58rem 0;
   border-top: 1px solid var(--line);
 }
@@ -693,6 +866,8 @@ code {
   font-size: 0.73rem;
   font-weight: 900;
   letter-spacing: 0.1em;
+  min-width: 0;
+  overflow-wrap: anywhere;
   text-transform: uppercase;
 }
 
@@ -701,6 +876,8 @@ code {
 .adventure-stats dd {
   margin: 0;
   color: #eadfd0;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .compact-offer {
@@ -712,6 +889,8 @@ code {
 .provenance-note {
   border-left: 2px solid rgba(239, 183, 86, 0.46);
   margin: 0 0 1.1rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
   padding-left: 0.8rem;
   font-size: 0.92rem;
 }
@@ -799,6 +978,8 @@ code {
     repeating-linear-gradient(0deg, rgba(32, 23, 14, 0.035) 0 1px, transparent 1px 22px),
     var(--paper);
   color: var(--paper-ink);
+  min-width: 0;
+  overflow-wrap: anywhere;
   padding: 1rem;
   box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
 }
@@ -829,6 +1010,7 @@ code {
   position: relative;
   z-index: 1;
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
   gap: 0.65rem;
@@ -837,6 +1019,7 @@ code {
   font-size: 0.73rem;
   font-weight: 950;
   letter-spacing: 0.13em;
+  overflow-wrap: anywhere;
   text-transform: uppercase;
 }
 
@@ -845,6 +1028,7 @@ code {
   z-index: 1;
   color: var(--paper-ink);
   font-size: 1.45rem;
+  overflow-wrap: anywhere;
 }
 
 .passport-list {
@@ -1002,6 +1186,8 @@ code {
   border-radius: var(--radius-lg);
   background: var(--panel);
   box-shadow: var(--shadow);
+  min-width: 0;
+  overflow-wrap: anywhere;
   padding: clamp(1rem, 3vw, 1.4rem);
 }
 
@@ -1155,6 +1341,7 @@ code {
   .hero-metrics,
   .signal-bar,
   .split-heading,
+  .taxonomy-class-heading,
   .collection-tools,
   .adventure-grid,
   .journal-strip,

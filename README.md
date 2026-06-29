@@ -73,7 +73,9 @@ Images can be uploaded into the item folder or listed explicitly in `images` as 
 
 The static helper at `admin/new-listing.html` is an admin-only utility for copying or downloading item data. It cannot upload, authenticate, commit files to GitHub, or publish listings because this is a static Pages site with no backend.
 
-`scripts/build_shop.py` uses only Python stdlib. It writes `data/shop.json`, looks up exact Meteoritical Bulletin matches by `name`, caches successes and failures in `data/metbull-cache.json`, and keeps building with local fields if MetBull is unavailable.
+`scripts/build_shop.py` uses only Python stdlib. It writes `data/shop.json`, looks up exact Meteoritical Bulletin matches by `name`, caches successes and failures in `data/metbull-cache.json`, and keeps building with local fields if the Meteoritical Bulletin Database is unavailable.
+
+Generated shop data includes a `taxonomy` index for the main shop page. The index groups active inventory by meteorite class, type, subtype, and official meteorite name using Meteoritical Bulletin classifications first, with listing classification used only as a fallback.
 
 GitHub Actions runs `.github/workflows/build-shop.yml` on relevant pushes, manually via `workflow_dispatch`, and every 10 minutes. The action commits changed `data/shop.json` and `data/metbull-cache.json` back with the GitHub Actions bot.
 

@@ -83,6 +83,81 @@ function buildMetbullLine(item) {
   return parts.join(" | ");
 }
 
+function countText(count, singular, plural = `${singular}s`) {
+  const value = Number(count) || 0;
+  return `${value} ${value === 1 ? singular : plural}`;
+}
+
+function headingWithCount(tag, label, count) {
+  const heading = createElement(tag);
+  heading.append(document.createTextNode(label || "Unclassified"), createElement("span", null, String(Number(count) || 0)));
+  return heading;
+}
+
+function validHttpUrl(value) {
+  const url = String(value || "").trim();
+  return /^https?:\/\//i.test(url) ? url : "";
+}
+
+function renderTaxonomyName(entry) {
+  const item = createElement("li");
+  const label = entry.name || "Unnamed meteorite";
+  const sourceUrl = validHttpUrl(entry.source_url);
+  const nameNode = sourceUrl ? createElement("a", null, label) : createElement("strong", null, label);
+
+  if (sourceUrl) {
+    nameNode.href = sourceUrl;
+    nameNode.target = "_blank";
+    nameNode.rel = "noopener noreferrer";
+  }
+
+  item.append(nameNode, createElement("span", null, countText(entry.count, "listing")));
+  return item;
+}
+
+function renderTaxonomySubtype(subtype) {
+  const section = createElement("div", "taxonomy-subtype");
+  const names = createElement("ul", "taxonomy-names");
+  (subtype.names || []).forEach((name) => names.append(renderTaxonomyName(name)));
+  section.append(headingWithCount("h5", subtype.name, subtype.count), names);
+  return section;
+}
+
+function renderTaxonomyType(type) {
+  const section = createElement("div", "taxonomy-type");
+  section.append(headingWithCount("h4", type.name, type.count));
+  (type.subtypes || []).forEach((subtype) => section.append(renderTaxonomySubtype(subtype)));
+  return section;
+}
+
+function renderTaxonomyClass(group) {
+  const article = createElement("article", "taxonomy-class");
+  const heading = createElement("div", "taxonomy-class-heading");
+  const titleWrap = createElement("div");
+  titleWrap.append(createElement("p", "eyebrow", "Class"), headingWithCount("h3", group.name, group.count));
+  heading.append(titleWrap, createElement("p", null, `${countText((group.types || []).length, "type")} represented in this class.`));
+  article.append(heading);
+  (group.types || []).forEach((type) => article.append(renderTaxonomyType(type)));
+  return article;
+}
+
+function renderTaxonomyIndex(root, taxonomy) {
+  const classes = Array.isArray(taxonomy?.classes) ? taxonomy.classes : [];
+  if (!classes.length) {
+    const empty = createElement("article", "taxonomy-class");
+    const heading = createElement("div", "taxonomy-class-heading");
+    const titleWrap = createElement("div");
+    titleWrap.append(createElement("p", "eyebrow", "Class index"), createElement("h3", null, "Taxonomy pending"));
+    heading.append(titleWrap, createElement("p", null, "Add classified inventory and rerun the shop build to publish the Meteoritical Bulletin index."));
+    empty.append(heading);
+    root.replaceChildren(empty);
+    return;
+  }
+
+  const source = createElement("p", "taxonomy-source", taxonomy.source || "Meteoritical Bulletin classifications drive this grouping.");
+  root.replaceChildren(source, ...classes.map(renderTaxonomyClass));
+}
+
 function renderShopImage(item) {
   const image = Array.isArray(item.images) ? item.images[0] : null;
   const media = createElement("div", "media offer-media");
@@ -163,6 +238,7 @@ function formatGeneratedAt(value) {
 
 async function setupShopData() {
   const grid = document.querySelector("[data-shop-grid]");
+  const taxonomy = document.querySelector("[data-shop-taxonomy]");
   const status = document.getElementById("shopRefreshStatus");
   if (!grid || !window.fetch) return;
 
@@ -172,6 +248,8 @@ async function setupShopData() {
 
     const data = await response.json();
     if (!Array.isArray(data.items)) throw new Error("Shop data is missing an items array");
+
+    if (taxonomy) renderTaxonomyIndex(taxonomy, data.taxonomy);
 
     if (data.items.length) {
       grid.replaceChildren(...data.items.map(renderShopCard));
@@ -190,7 +268,8 @@ async function setupShopData() {
 
     const generatedAt = formatGeneratedAt(data.generated_at);
     if (status && generatedAt) {
-      status.textContent = `Inventory generated from inventory/shop at ${generatedAt}. GitHub Actions checks for updates about every 10 minutes.`;
+      const metbullCount = Number(data.taxonomy?.metbull_item_count) || 0;
+      status.textContent = `Inventory taxonomy generated from inventory/shop at ${generatedAt}. ${countText(metbullCount, "listing")} rooted in Meteoritical Bulletin matches. GitHub Actions checks for updates about every 10 minutes.`;
     }
   } catch (error) {
     if (status) {

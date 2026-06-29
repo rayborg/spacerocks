@@ -33,7 +33,7 @@
       <div class="hero-copy">
         <p class="eyebrow">Shop, archive, and field journal</p>
         <h1 id="hero-title">Collected pieces of the solar system, documented before they are displayed or offered.</h1>
-        <p class="hero-lede">Spacerocks brings together meteorite sale listings, a clearly marked not-for-sale personal collection, and expedition notes from fresh fall recoveries.</p>
+        <p class="hero-lede">Spacerocks brings together meteorite sale listings, a personal collection archive, and expedition notes from fresh fall recoveries.</p>
         <div class="hero-actions" aria-label="Primary actions">
           <a class="button button-primary" href="#shop">Shop meteorites</a>
           <a class="button" href="#collection">View passports</a>
@@ -91,19 +91,48 @@
       <article>
         <span class="signal-icon" aria-hidden="true">03</span>
         <h2>Clear boundaries</h2>
-        <p>Shop cards are sale listings. Personal collection cards are marked not for sale.</p>
+        <p>Shop cards are sale listings. Personal collection cards are archive records.</p>
       </article>
     </section>
 
     <section class="section-block shop-section" id="shop" data-site-section aria-labelledby="shop-title">
       <div class="section-heading">
         <p class="eyebrow">Active shop</p>
-        <h2 id="shop-title">Meteorites for sale</h2>
-        <p>Listings are built for direct purchase workflows. Payment buttons can point to PayPal, Link checkout, or another cart flow when enabled.</p>
+        <h2 id="shop-title">Meteorite class index</h2>
+        <p>Browse available material by class, type, and subtype. Counts and meteorite names are built from exact Meteoritical Bulletin classifications when a match is available.</p>
       </div>
 
       <div class="shop-meta">
-        <p class="shop-generated-note" id="shopRefreshStatus">Inventory cards are generated from <code>inventory/shop/</code> and refreshed by GitHub Actions about every 10 minutes after uploads or edits.</p>
+        <p class="shop-generated-note" id="shopRefreshStatus">Inventory taxonomy and listing cards are generated from <code>inventory/shop/</code> and refreshed by GitHub Actions about every 10 minutes after uploads or edits.</p>
+      </div>
+
+      <div class="taxonomy-index" data-shop-taxonomy aria-live="polite">
+        <article class="taxonomy-class">
+          <div class="taxonomy-class-heading">
+            <div>
+              <p class="eyebrow">Class</p>
+              <h3>Chondrite <span>2</span></h3>
+            </div>
+            <p>Meteoritical Bulletin classification: CM2.</p>
+          </div>
+          <div class="taxonomy-type">
+            <h4>Carbonaceous chondrite <span>2</span></h4>
+            <div class="taxonomy-subtype">
+              <h5>CM2 <span>2</span></h5>
+              <ul class="taxonomy-names">
+                <li>
+                  <a href="https://www.lpi.usra.edu/meteor/metbull.php?code=69696" target="_blank" rel="noopener noreferrer">Aguas Zarcas</a>
+                  <span>2 listings</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="shop-listings-heading">
+        <p class="eyebrow">Listing detail cards</p>
+        <h3>Current specimens and presentations</h3>
       </div>
 
       <div class="offer-grid" id="shopItems" data-shop-grid aria-live="polite">
@@ -504,7 +533,7 @@
         <article>
           <span class="trust-number">02</span>
           <h3>Status badges</h3>
-          <p>Available, not-for-sale, scarce, field, and science badges make it clear what can be purchased and what is archival.</p>
+          <p>Available, scarce, field, and science badges make it clear what can be purchased and what is archival.</p>
         </article>
         <article>
           <span class="trust-number">03</span>
