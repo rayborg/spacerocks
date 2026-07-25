@@ -1,5 +1,53 @@
 {
-  "generated_at": "2026-06-29T08:49:23Z",
+  "generated_at": "2026-07-24T19:35:49Z",
+  "highlights": {
+    "criteria": {
+      "highlight_limit": 6,
+      "low_price_percentile": 0.25,
+      "maximum_rare_count": 2,
+      "maximum_rare_share": 0.1,
+      "minimum_price_gap": 0.1,
+      "minimum_price_peers": 8,
+      "minimum_rarity_types": 5,
+      "minimum_rarity_universe": 20,
+      "new_window_days": 45
+    },
+    "items": [
+      {
+        "event_at": "2026-06-27",
+        "event_kind": "listed",
+        "listed_at": "2026-06-27",
+        "metrics": {
+          "price_peer_count": 0,
+          "price_per_gram_usd": null
+        },
+        "recency_labels": [
+          "New listing"
+        ],
+        "slug": "aguas-zarcas-cosmic-5pc-puzzle"
+      },
+      {
+        "event_at": "2026-06-27",
+        "event_kind": "listed",
+        "listed_at": "2026-06-27",
+        "metrics": {
+          "price_peer_count": 0,
+          "price_per_gram_usd": null
+        },
+        "recency_labels": [
+          "New listing"
+        ],
+        "slug": "aguas-zarcas-hammerstone-panel"
+      }
+    ],
+    "methodology_version": "spacerocks-highlights-v1",
+    "notes": [
+      "Price comparisons use only database-matched shop listings with the same classification and are not market valuations.",
+      "Rare means uncommon in the current shop mix unless a listing includes separate rarity evidence.",
+      "No exact database match does not determine authenticity or whether a name may be approved later.",
+      "A missing highlight usually means there is not enough comparable data."
+    ]
+  },
   "items": [
     {
       "badges": [
@@ -16,6 +64,7 @@
           "src": "assets/images/spacerock/source-puzzle-190g.png"
         }
       ],
+      "listed_at": "2026-06-27",
       "metbull": {
         "bulletin": "108",
         "bulletin_url": "https://doi.org/10.1111/maps.13493",
@@ -65,6 +114,7 @@
           "src": "assets/images/spacerock/source-aguas-zarcas-hammer.png"
         }
       ],
+      "listed_at": "2026-06-27",
       "metbull": {
         "bulletin": "108",
         "bulletin_url": "https://doi.org/10.1111/maps.13493",

@@ -6,6 +6,7 @@ on:
     paths:
       - "inventory/shop/**"
       - "scripts/build_shop.py"
+      - "tests/**"
       - "data/shop.json"
       - "data/metbull-cache.json"
       - "admin/new-listing.html"
@@ -36,6 +37,8 @@ jobs:
           python-version: "3.11"
       - name: Build shop data
         run: python scripts/build_shop.py
+      - name: Test shop highlight rules
+        run: python -m unittest tests/test_build_shop.py
       - name: Validate generated JSON
         run: |
           python -m json.tool data/shop.json >/dev/null

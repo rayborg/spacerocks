@@ -99,6 +99,16 @@ function validHttpUrl(value) {
   return /^https?:\/\//i.test(url) ? url : "";
 }
 
+function focusAndScrollToListing(listingId) {
+  requestAnimationFrame(() => {
+    const card = document.getElementById(listingId);
+    if (!card) return;
+    const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    card.scrollIntoView({ block: "start", behavior });
+    card.focus({ preventScroll: true });
+  });
+}
+
 function renderTaxonomyName(entry) {
   const item = createElement("li");
   const label = entry.name || "Unnamed meteorite";
@@ -164,6 +174,82 @@ function renderTaxonomyIndex(root, taxonomy) {
   root.replaceChildren(source, ...classes.map(renderTaxonomyClass));
 }
 
+function formatDateOnly(value) {
+  if (!value) return null;
+  const date = new Date(`${value}T00:00:00Z`);
+  if (Number.isNaN(date.getTime())) return null;
+  return new Intl.DateTimeFormat("en-US", { dateStyle: "medium", timeZone: "UTC" }).format(date);
+}
+
+function renderHighlightItem(entry, item) {
+  const listItem = createElement("li");
+  const article = createElement("article", "recent-shop-item");
+  const main = createElement("div", "recent-shop-item-main");
+  const badges = createElement("div", "badge-row");
+
+  (entry.recency_labels || []).forEach((label) => badges.append(makeBadge(label, "badge-new")));
+  (entry.reasons || []).forEach((reason) => badges.append(makeBadge(reason.label, "badge-highlight")));
+
+  const title = createElement("h3", null, item.title || item.name || "Meteorite listing");
+  const description = createElement("p", null, item.description || "Listing details are being prepared.");
+  main.append(badges, title, description);
+
+  const facts = createElement("dl", "recent-shop-facts");
+  addSpec(facts, "Listed", formatDateOnly(entry.listed_at));
+  addSpec(facts, "Found", formatDateOnly(entry.found_at));
+  addSpec(facts, "Class", item.classification || item.taxonomy?.subtype);
+  addSpec(facts, "Mass", formatWeight(item.weight_g));
+  if (typeof entry.metrics?.price_per_gram_usd === "number") {
+    addSpec(facts, "Price / g", `$${entry.metrics.price_per_gram_usd.toFixed(2)}`);
+  }
+
+  const actions = createElement("div", "recent-shop-actions");
+  const link = createElement("a", "button", "View listing");
+  const listingTarget = `listing-${item.slug}`;
+  link.href = `#${listingTarget}`;
+  link.dataset.listingTarget = listingTarget;
+  actions.append(link);
+
+  if ((entry.reasons || []).length) {
+    const evidence = createElement("ul", "highlight-evidence");
+    entry.reasons.forEach((reason) => evidence.append(createElement("li", null, reason.evidence)));
+    main.append(evidence);
+  }
+
+  article.append(main, facts, actions);
+  listItem.append(article);
+  return listItem;
+}
+
+function renderShopHighlights(root, highlights, items) {
+  const entries = Array.isArray(highlights?.items) ? highlights.items : [];
+  const list = root.querySelector("[data-shop-highlight-list]");
+  const count = root.querySelector("[data-shop-highlight-count]");
+  const note = root.querySelector("[data-shop-highlight-note]");
+  if (!entries.length || !list) {
+    root.hidden = true;
+    return;
+  }
+
+  const itemsBySlug = new Map(items.map((item) => [item.slug, item]));
+  const rendered = entries
+    .map((entry) => {
+      const item = itemsBySlug.get(entry.slug);
+      return item ? renderHighlightItem(entry, item) : null;
+    })
+    .filter(Boolean);
+
+  if (!rendered.length) {
+    root.hidden = true;
+    return;
+  }
+
+  root.hidden = false;
+  list.replaceChildren(...rendered);
+  if (count) count.textContent = countText(rendered.length, "latest listing");
+  if (note && Array.isArray(highlights.notes)) note.textContent = highlights.notes.join(" ");
+}
+
 function renderShopImage(item) {
   const image = Array.isArray(item.images) ? item.images[0] : null;
   const media = createElement("div", "media offer-media");
@@ -192,6 +278,8 @@ function renderShopCard(item) {
   const status = item.status || "available";
   const checkoutUrl = getCheckoutUrl(item);
   const card = createElement("article", "offer-card");
+  if (item.slug) card.id = `listing-${item.slug}`;
+  card.tabIndex = -1;
   if (item.featured) card.classList.add("featured-offer");
   card.classList.add(`is-${status}`);
 
@@ -245,6 +333,7 @@ function formatGeneratedAt(value) {
 async function setupShopData() {
   const grid = document.querySelector("[data-shop-grid]");
   const taxonomy = document.querySelector("[data-shop-taxonomy]");
+  const highlights = document.querySelector("[data-shop-highlights]");
   const status = document.getElementById("shopRefreshStatus");
   if (!grid || !window.fetch) return;
 
@@ -256,10 +345,17 @@ async function setupShopData() {
     if (!Array.isArray(data.items)) throw new Error("Shop data is missing an items array");
 
     if (taxonomy) renderTaxonomyIndex(taxonomy, data.taxonomy);
+    if (highlights) renderShopHighlights(highlights, data.highlights, data.items);
 
     if (data.items.length) {
       grid.replaceChildren(...data.items.map(renderShopCard));
       setupImageFallbacks(grid);
+      try {
+        const listingId = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+        if (listingId.startsWith("listing-")) focusAndScrollToListing(listingId);
+      } catch {
+        // Ignore malformed hashes; section routing will show the default view.
+      }
     } else {
       const empty = createElement("article", "offer-card compact-offer shop-empty");
       const content = createElement("div", "card-content");
@@ -344,6 +440,7 @@ function setupSectionTabs() {
   if (!sections.length || !sectionIds.has("home")) return;
 
   document.body.classList.add("tabs-enabled");
+  const scrollBehavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
 
   const decodeSectionId = (value) => {
     try {
@@ -355,7 +452,13 @@ function setupSectionTabs() {
 
   const sectionFromHash = () => {
     const id = decodeSectionId(window.location.hash);
+    if (id.startsWith("listing-")) return "shop";
     return sectionIds.has(id) ? id : "home";
+  };
+
+  const listingFromHash = () => {
+    const id = decodeSectionId(window.location.hash);
+    return id.startsWith("listing-") ? id : "";
   };
 
   const setActiveNav = (activeId) => {
@@ -386,17 +489,34 @@ function setupSectionTabs() {
 
     if (scroll) {
       if (activeId === "home") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({ top: 0, behavior: scrollBehavior });
       } else {
-        document.getElementById("main")?.scrollIntoView({ block: "start", behavior: "smooth" });
+        document.getElementById("main")?.scrollIntoView({ block: "start", behavior: scrollBehavior });
       }
     }
+  };
+
+  const showCurrentLocation = ({ scroll = false } = {}) => {
+    const listingId = listingFromHash();
+    showSection(sectionFromHash(), { scroll: scroll && !listingId });
+    if (listingId && scroll) focusAndScrollToListing(listingId);
   };
 
   document.addEventListener("click", (event) => {
     if (!(event.target instanceof Element)) return;
     const link = event.target.closest("a[href^='#']");
     if (!link) return;
+
+    const listingTarget = link.dataset.listingTarget;
+    if (listingTarget) {
+      event.preventDefault();
+      if (window.location.hash !== `#${listingTarget}`) {
+        history.pushState(null, "", `#${listingTarget}`);
+      }
+      showSection("shop");
+      focusAndScrollToListing(listingTarget);
+      return;
+    }
 
     const target = decodeSectionId(link.getAttribute("href"));
     if (!sectionIds.has(target)) return;
@@ -408,9 +528,9 @@ function setupSectionTabs() {
     showSection(target, { scroll: true });
   });
 
-  window.addEventListener("hashchange", () => showSection(sectionFromHash(), { scroll: true }));
-  window.addEventListener("popstate", () => showSection(sectionFromHash(), { scroll: true }));
-  showSection(sectionFromHash());
+  window.addEventListener("hashchange", () => showCurrentLocation({ scroll: true }));
+  window.addEventListener("popstate", () => showCurrentLocation({ scroll: true }));
+  showCurrentLocation({ scroll: Boolean(listingFromHash()) });
 }
 
 setupImageFallbacks();

@@ -102,6 +102,53 @@
         <p>Browse available material by class, type, and subtype. Counts and meteorite names are built from exact Meteoritical Bulletin classifications when a match is available.</p>
       </div>
 
+      <aside class="recent-shop" data-shop-highlights aria-labelledby="recent-shop-title">
+        <details open>
+          <summary>
+            <span class="recent-shop-summary">
+              <span class="eyebrow">Shop watch</span>
+              <span class="recent-shop-title" id="recent-shop-title">Latest listings and evidence-backed highlights</span>
+              <span class="recent-shop-note">Highlights use explicit listing/find dates and evidence-backed comparisons.</span>
+            </span>
+            <span class="button recent-shop-toggle" data-shop-highlight-count aria-hidden="true">2 latest listings</span>
+          </summary>
+          <div class="recent-shop-panel">
+            <p class="recent-shop-explainer" data-shop-highlight-note>Price comparisons are limited to comparable Spacerocks inventory and are not market valuations. Database-match and rarity labels include their evidence.</p>
+            <ul class="recent-shop-list" data-shop-highlight-list>
+              <li>
+                <article class="recent-shop-item">
+                  <div class="recent-shop-item-main">
+                    <div class="badge-row"><span class="badge badge-new">Listed Jun 27</span></div>
+                    <h3>Aguas Zarcas Cosmic 5pc Puzzle</h3>
+                    <p>A five-piece Aguas Zarcas presentation with documented fall context.</p>
+                  </div>
+                  <dl class="recent-shop-facts">
+                    <div><dt>Listed</dt><dd>Jun 27, 2026</dd></div>
+                    <div><dt>Class</dt><dd>CM2</dd></div>
+                    <div><dt>Mass</dt><dd>188.5 g</dd></div>
+                  </dl>
+                  <div class="recent-shop-actions"><a class="button" href="#listing-aguas-zarcas-cosmic-5pc-puzzle" data-listing-target="listing-aguas-zarcas-cosmic-5pc-puzzle">View listing</a></div>
+                </article>
+              </li>
+              <li>
+                <article class="recent-shop-item">
+                  <div class="recent-shop-item-main">
+                    <div class="badge-row"><span class="badge badge-new">Listed Jun 27</span></div>
+                    <h3>Aguas Zarcas Hammerstone Panel</h3>
+                    <p>A story-led display panel with photo and note packet.</p>
+                  </div>
+                  <dl class="recent-shop-facts">
+                    <div><dt>Listed</dt><dd>Jun 27, 2026</dd></div>
+                    <div><dt>Class</dt><dd>CM2</dd></div>
+                  </dl>
+                  <div class="recent-shop-actions"><a class="button" href="#listing-aguas-zarcas-hammerstone-panel" data-listing-target="listing-aguas-zarcas-hammerstone-panel">View listing</a></div>
+                </article>
+              </li>
+            </ul>
+          </div>
+        </details>
+      </aside>
+
       <div class="shop-meta">
         <p class="shop-generated-note" id="shopRefreshStatus">Inventory taxonomy and listing cards are generated from <code>inventory/shop/</code> and refreshed by GitHub Actions about every 10 minutes after uploads or edits.</p>
       </div>
@@ -136,7 +183,7 @@
       </div>
 
       <div class="offer-grid" id="shopItems" data-shop-grid aria-live="polite">
-        <article class="offer-card featured-offer" data-shop-fallback>
+        <article class="offer-card featured-offer" id="listing-aguas-zarcas-cosmic-5pc-puzzle" tabindex="-1" data-shop-fallback>
           <div class="media offer-media">
             <img class="js-safe-image" src="assets/images/spacerock/source-puzzle-190g.png" alt="Aguas Zarcas five piece cosmic puzzle specimen" width="720" height="600" loading="lazy" decoding="async" data-fallback-label="Aguas Zarcas puzzle image">
             <span class="image-fallback">Puzzle image</span>
@@ -156,7 +203,7 @@
           </div>
         </article>
 
-        <article class="offer-card" data-shop-fallback>
+        <article class="offer-card" id="listing-aguas-zarcas-hammerstone-panel" tabindex="-1" data-shop-fallback>
           <div class="media offer-media">
             <img class="js-safe-image" src="assets/images/spacerock/source-aguas-zarcas-hammer.png" alt="Aguas Zarcas hammerstone panel archive image" width="720" height="600" loading="lazy" decoding="async" data-fallback-label="Hammerstone panel image">
             <span class="image-fallback">Hammerstone image</span>

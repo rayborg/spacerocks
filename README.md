@@ -32,6 +32,7 @@ Then open `http://localhost:8000/`.
 For static edits, also run:
 
 ```sh
+python3 -m unittest tests/test_build_shop.py
 python3 -m py_compile scripts/build_shop.py
 node --check app.js
 git diff --check
@@ -56,10 +57,13 @@ Minimal `item.json` fields are:
   "weight_g": 3.2,
   "price_usd": null,
   "status": "available",
+  "listed_at": "2026-07-24",
+  "found_at": null,
   "description": "Short collector-facing description.",
   "type": "Carbonaceous chondrite fall",
   "classification": "CM2",
   "provenance": "Source, packet, or field notes.",
+  "rarity_note": "",
   "badges": ["Carbonaceous", "MetBull"],
   "checkout_url": "",
   "image_order": ["front.jpg", "back.jpg"],
@@ -71,11 +75,22 @@ Minimal `item.json` fields are:
 
 Images can be uploaded into the item folder or listed explicitly in `images` as paths such as `assets/images/spacerock/source-puzzle-190g.png`. Use `status` values of `available`, `coming-soon`, `hold`, or `sold`. Add `checkout_url` when a PayPal, Link, or hosted checkout page is ready for a listing.
 
+Use ISO `YYYY-MM-DD` dates in `listed_at` and optional `found_at`. The shop-watch section shows up to six of the most recently dated available listings and ignores future dates. It labels a date as new for 45 calendar dates including the listed/found date.
+
+Highlight rules are deliberately conservative:
+
+- Low price per gram requires at least eight other database-matched meteorite names with the same classification, a result in the lowest price quartile, and a price at least 10% below the peer median. Multiple listings of one meteorite name contribute one median peer value.
+- Automatic rarity requires at least 20 distinct database-matched names across five shop types. A type is highlighted only when it represents at most two names and no more than 10% of that shop snapshot.
+- `rarity_note` adds a separate evidence-backed rarity or scarcity explanation; leave it blank rather than making an unsupported claim.
+- “No exact Meteoritical Bulletin match” is shown only after an exact-name lookup returns no record. It does not determine authenticity or future database status.
+
+Successful Meteoritical Bulletin lookups refresh after 30 days, not-found results after seven days, and transient errors after one day.
+
 The static helper at `admin/new-listing.html` is an admin-only utility for copying or downloading item data. It cannot upload, authenticate, commit files to GitHub, or publish listings because this is a static Pages site with no backend.
 
 `scripts/build_shop.py` uses only Python stdlib. It writes `data/shop.json`, looks up exact Meteoritical Bulletin matches by `name`, caches successes and failures in `data/metbull-cache.json`, and keeps building with local fields if the Meteoritical Bulletin Database is unavailable.
 
-Generated shop data includes a `taxonomy` index for the main shop page. The index groups available inventory by meteorite class, type, subtype, and official meteorite name using Meteoritical Bulletin classifications first, with listing classification used only when no database classification is available.
+Generated shop data includes a `taxonomy` index and a `highlights` feed for the main shop page. The index groups available inventory by meteorite class, type, subtype, and official meteorite name using Meteoritical Bulletin classifications first, with listing classification used only when no database classification is available.
 
 GitHub Actions runs `.github/workflows/build-shop.yml` on relevant pushes, manually via `workflow_dispatch`, and every 10 minutes. The action commits changed `data/shop.json` and `data/metbull-cache.json` back with the GitHub Actions bot.
 
@@ -83,6 +98,7 @@ Before publishing inventory edits, run:
 
 ```sh
 python3 scripts/build_shop.py
+python3 -m unittest tests/test_build_shop.py
 python3 -m py_compile scripts/build_shop.py
 node --check app.js
 git diff --check

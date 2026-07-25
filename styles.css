@@ -597,6 +597,175 @@ code {
   border-radius: var(--radius-md);
 }
 
+.recent-shop {
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(239, 183, 86, 0.14), transparent 20rem),
+    var(--panel);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.recent-shop summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1rem;
+  align-items: center;
+  min-height: 4.5rem;
+  cursor: pointer;
+  list-style: none;
+  padding: 1rem 1.15rem;
+}
+
+.recent-shop summary::-webkit-details-marker {
+  display: none;
+}
+
+.recent-shop summary:focus-visible {
+  border-radius: calc(var(--radius-lg) - 2px);
+  outline-offset: -4px;
+}
+
+.recent-shop summary > *,
+.recent-shop-item > *,
+.recent-shop-item-main,
+.recent-shop-facts,
+.recent-shop-actions {
+  min-width: 0;
+}
+
+.recent-shop-summary,
+.recent-shop-title,
+.recent-shop-note {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.recent-shop-summary .eyebrow {
+  margin-bottom: 0.35rem;
+}
+
+.recent-shop-title {
+  color: var(--text);
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.recent-shop-note {
+  margin-top: 0.3rem;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.recent-shop-toggle {
+  pointer-events: none;
+}
+
+.recent-shop-toggle::after {
+  margin-left: 0.45rem;
+  content: "+";
+}
+
+.recent-shop details[open] .recent-shop-toggle::after {
+  content: "-";
+}
+
+.recent-shop-panel {
+  border-top: 1px solid var(--line);
+  padding: 1rem;
+}
+
+.recent-shop-explainer {
+  max-width: 76rem;
+  margin: 0 0 1rem;
+  font-size: 0.88rem;
+}
+
+.recent-shop-list,
+.highlight-evidence {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recent-shop-list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.recent-shop-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(14rem, 0.75fr) auto;
+  gap: 1rem;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.035);
+  padding: 1rem;
+  overflow-wrap: anywhere;
+}
+
+.recent-shop-item h3 {
+  margin: 0.75rem 0 0.45rem;
+}
+
+.recent-shop-item-main > p {
+  margin-bottom: 0;
+}
+
+.recent-shop-facts {
+  margin: 0;
+}
+
+.recent-shop-facts div {
+  display: grid;
+  grid-template-columns: minmax(4.5rem, 0.55fr) minmax(0, 1fr);
+  gap: 0.5rem;
+  border-top: 1px solid var(--line);
+  padding: 0.42rem 0;
+}
+
+.recent-shop-facts dt {
+  color: var(--gold);
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.recent-shop-facts dd {
+  margin: 0;
+  color: #eadfd0;
+}
+
+.highlight-evidence {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.8rem;
+}
+
+.highlight-evidence li {
+  border-left: 2px solid rgba(239, 183, 86, 0.5);
+  color: var(--muted);
+  font-size: 0.82rem;
+  padding-left: 0.65rem;
+}
+
+.badge-new {
+  border-color: rgba(159, 207, 157, 0.5);
+  background: rgba(159, 207, 157, 0.12);
+  color: #dcffd8;
+}
+
+.badge-highlight {
+  border-color: rgba(239, 183, 86, 0.56);
+  background: rgba(239, 183, 86, 0.12);
+  color: #ffe0a0;
+}
+
 .shop-meta {
   display: flex;
   flex-wrap: wrap;
@@ -1351,6 +1520,8 @@ code {
   .hero-metrics,
   .signal-bar,
   .split-heading,
+  .recent-shop summary,
+  .recent-shop-item,
   .taxonomy-class-heading,
   .collection-tools,
   .adventure-grid,
@@ -1392,6 +1563,7 @@ code {
 
 @media (max-width: 620px) {
   .hero-actions .button,
+  .recent-shop .button,
   .card-content .button,
   .contact-panel .button {
     width: 100%;
@@ -1431,6 +1603,7 @@ code {
   }
 
   .spec-list div,
+  .recent-shop-facts div,
   .passport-list div,
   .adventure-stats div,
   .timeline li {

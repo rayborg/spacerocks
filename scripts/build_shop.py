@@ -39,6 +39,17 @@ USER_AGENT = (
 )
 REQUEST_TIMEOUT_SECONDS = 12
 FAILURE_RETRY_SECONDS = 24 * 60 * 60
+NOT_FOUND_RETRY_SECONDS = 7 * 24 * 60 * 60
+SUCCESS_RETRY_SECONDS = 30 * 24 * 60 * 60
+HIGHLIGHT_LIMIT = 6
+NEW_LISTING_WINDOW_DAYS = 45
+MINIMUM_PRICE_PEERS = 8
+LOW_PRICE_PERCENTILE = 0.25
+MINIMUM_PRICE_GAP = 0.10
+MINIMUM_RARITY_UNIVERSE = 20
+MINIMUM_RARITY_TYPES = 5
+MAXIMUM_RARE_COUNT = 2
+MAXIMUM_RARE_SHARE = 0.10
 
 
 class MetBullTableParser(HTMLParser):
@@ -184,6 +195,17 @@ def to_http_url(value: Any, field: str, slug: str) -> str | None:
         warn(f"{slug}: ignoring invalid {field!r}: {value!r}")
         return None
     return url
+
+
+def to_iso_date(value: Any, field: str, slug: str) -> str | None:
+    text = normalize_space(value)
+    if not text:
+        return None
+    try:
+        return dt.date.fromisoformat(text).isoformat()
+    except ValueError:
+        warn(f"{slug}: ignoring invalid {field!r}; use YYYY-MM-DD: {value!r}")
+        return None
 
 
 def infer_taxonomy(classification: str) -> dict[str, str]:
@@ -409,8 +431,13 @@ def parse_metbull_record(name: str, body: str, source_url: str) -> dict[str, Any
     return None
 
 
-def cache_entry_is_recent_failure(entry: dict[str, Any], now: dt.datetime) -> bool:
-    if entry.get("status") != "error":
+def cache_entry_is_recent(
+    entry: dict[str, Any],
+    expected_status: str,
+    max_age_seconds: int,
+    now: dt.datetime,
+) -> bool:
+    if entry.get("status") != expected_status:
         return False
     cached_at = entry.get("cached_at")
     if not cached_at:
@@ -419,17 +446,22 @@ def cache_entry_is_recent_failure(entry: dict[str, Any], now: dt.datetime) -> bo
         cached = dt.datetime.fromisoformat(cached_at.replace("Z", "+00:00"))
     except ValueError:
         return False
-    return (now - cached).total_seconds() < FAILURE_RETRY_SECONDS
+    return (now - cached).total_seconds() < max_age_seconds
 
 
 def lookup_metbull(name: str, cache: dict[str, Any]) -> dict[str, Any]:
     lookups = cache.setdefault("lookups", {})
     cached = lookups.get(name)
     now = dt.datetime.now(dt.UTC)
-    if isinstance(cached, dict) and cached.get("status") in {"ok", "not_found"}:
-        return cached
-    if isinstance(cached, dict) and cache_entry_is_recent_failure(cached, now):
-        return cached
+    if isinstance(cached, dict):
+        retry_windows = {
+            "ok": SUCCESS_RETRY_SECONDS,
+            "not_found": NOT_FOUND_RETRY_SECONDS,
+            "error": FAILURE_RETRY_SECONDS,
+        }
+        status = cached.get("status")
+        if status in retry_windows and cache_entry_is_recent(cached, status, retry_windows[status], now):
+            return cached
 
     source_url = build_metbull_search_url(name)
     try:
@@ -502,11 +534,14 @@ def normalize_item(item_dir: Path, cache: dict[str, Any]) -> dict[str, Any]:
         "weight_g": to_float(raw.get("weight_g"), "weight_g", slug),
         "price_usd": to_float(raw.get("price_usd"), "price_usd", slug),
         "status": status,
+        "listed_at": to_iso_date(raw.get("listed_at"), "listed_at", slug),
+        "found_at": to_iso_date(raw.get("found_at"), "found_at", slug),
         "description": normalize_space(raw.get("description")),
         "type": item_type or None,
         "classification": classification or None,
         "taxonomy": taxonomy,
         "provenance": normalize_space(raw.get("provenance")),
+        "rarity_note": normalize_space(raw.get("rarity_note")),
         "badges": to_string_list(raw.get("badges")),
         "checkout_url": to_http_url(raw.get("checkout_url"), "checkout_url", slug),
         "checkout_label": normalize_space(raw.get("checkout_label")),
@@ -606,6 +641,198 @@ def build_taxonomy_index(items: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def median(values: list[float]) -> float:
+    ordered = sorted(values)
+    midpoint = len(ordered) // 2
+    if len(ordered) % 2:
+        return ordered[midpoint]
+    return (ordered[midpoint - 1] + ordered[midpoint]) / 2
+
+
+def price_per_gram(item: dict[str, Any]) -> float | None:
+    price = item.get("price_usd")
+    mass = item.get("weight_g")
+    if not isinstance(price, (int, float)) or not isinstance(mass, (int, float)):
+        return None
+    if price <= 0 or mass <= 0:
+        return None
+    return float(price) / float(mass)
+
+
+def metbull_item_key(item: dict[str, Any]) -> str:
+    metbull = item.get("metbull", {})
+    code = normalize_space(metbull.get("code"))
+    if code:
+        return f"code:{code}"
+    name = normalize_name(metbull.get("official_name") or item.get("name"))
+    return f"name:{name}" if name else ""
+
+
+def build_shop_highlights(items: list[dict[str, Any]]) -> dict[str, Any]:
+    available_items = [item for item in items if item.get("status") == "available"]
+    today = dt.datetime.now(dt.UTC).date()
+    today_iso = today.isoformat()
+    recent_cutoff = today - dt.timedelta(days=NEW_LISTING_WINDOW_DAYS - 1)
+
+    def eligible_date(item: dict[str, Any], field: str) -> str | None:
+        value = item.get(field)
+        return value if value and value <= today_iso else None
+
+    dated_items = [
+        item
+        for item in available_items
+        if eligible_date(item, "listed_at") or eligible_date(item, "found_at")
+    ]
+
+    price_groups: dict[str, dict[str, list[float]]] = {}
+    rarity_names: dict[str, str] = {}
+    for item in available_items:
+        if item.get("metbull_lookup", {}).get("status") != "ok":
+            continue
+        key = metbull_item_key(item)
+        classification = normalize_space(item.get("classification"))
+        taxonomy_type = normalize_space(item.get("taxonomy", {}).get("type"))
+        if key and taxonomy_type:
+            rarity_names.setdefault(key, taxonomy_type)
+        unit_price = price_per_gram(item)
+        if key and classification and unit_price is not None:
+            price_groups.setdefault(classification, {}).setdefault(key, []).append(unit_price)
+
+    rarity_counts: dict[str, int] = {}
+    for taxonomy_type in rarity_names.values():
+        rarity_counts[taxonomy_type] = rarity_counts.get(taxonomy_type, 0) + 1
+    rarity_enabled = (
+        len(rarity_names) >= MINIMUM_RARITY_UNIVERSE
+        and len(rarity_counts) >= MINIMUM_RARITY_TYPES
+    )
+
+    def event_date(item: dict[str, Any]) -> str:
+        return max(filter(None, [eligible_date(item, "listed_at"), eligible_date(item, "found_at")]))
+
+    dated_items.sort(key=lambda item: item.get("title", "").casefold())
+    dated_items.sort(key=event_date, reverse=True)
+    highlights = []
+    for item in dated_items[:HIGHLIGHT_LIMIT]:
+        listed_at = eligible_date(item, "listed_at")
+        found_at = eligible_date(item, "found_at")
+        event_at = event_date(item)
+        event_kind = "found" if found_at and found_at >= (listed_at or "") else "listed"
+        recency_labels = []
+        for date_value, label in ((listed_at, "New listing"), (found_at, "Recent find")):
+            if date_value:
+                parsed_date = dt.date.fromisoformat(date_value)
+                if recent_cutoff <= parsed_date <= today:
+                    recency_labels.append(label)
+
+        reasons = []
+        unit_price = price_per_gram(item)
+        key = metbull_item_key(item)
+        exact_match = item.get("metbull_lookup", {}).get("status") == "ok"
+        classification = normalize_space(item.get("classification"))
+        price_peer_count = 0
+        if unit_price is not None and exact_match and key and classification:
+            peer_values = [
+                median(values)
+                for peer_key, values in price_groups.get(classification, {}).items()
+                if peer_key != key
+            ]
+            price_peer_count = len(peer_values)
+            if price_peer_count >= MINIMUM_PRICE_PEERS:
+                peer_median = median(peer_values)
+                less = sum(value < unit_price for value in peer_values)
+                ties = sum(abs(value - unit_price) < 1e-9 for value in peer_values)
+                percentile = (less + 0.5 * ties) / price_peer_count
+                gap = (peer_median - unit_price) / peer_median if peer_median > 0 else 0
+                if percentile <= LOW_PRICE_PERCENTILE and gap >= MINIMUM_PRICE_GAP:
+                    reasons.append(
+                        {
+                            "code": "LOW_PPG_IN_INVENTORY",
+                            "label": "Low price per gram vs comparable shop listings",
+                            "evidence": (
+                                f"${unit_price:.2f}/g compared with {price_peer_count} other meteorite names "
+                                f"classified {classification}; peer median ${peer_median:.2f}/g."
+                            ),
+                        }
+                    )
+
+        taxonomy_type = normalize_space(item.get("taxonomy", {}).get("type"))
+        if rarity_enabled and exact_match and key in rarity_names and taxonomy_type:
+            class_count = rarity_counts.get(taxonomy_type, 0)
+            class_share = class_count / len(rarity_names)
+            if class_count <= MAXIMUM_RARE_COUNT and class_share <= MAXIMUM_RARE_SHARE:
+                reasons.append(
+                    {
+                        "code": "RARE_IN_INVENTORY",
+                        "label": "Rare in the current shop mix",
+                        "evidence": (
+                            f"{taxonomy_type} represents {class_count} of {len(rarity_names)} distinct "
+                            "database-matched meteorite names in this shop snapshot."
+                        ),
+                    }
+                )
+
+        rarity_note = normalize_space(item.get("rarity_note"))
+        if rarity_note:
+            reasons.append(
+                {
+                    "code": "RARITY_NOTE",
+                    "label": "Rare or scarce context",
+                    "evidence": rarity_note,
+                }
+            )
+
+        if item.get("metbull_lookup", {}).get("status") == "not_found":
+            cached_at = normalize_space(item.get("metbull_lookup", {}).get("cached_at"))
+            checked_note = f" Checked {cached_at[:10]}." if cached_at else ""
+            reasons.append(
+                {
+                    "code": "NO_EXACT_METBULL_MATCH",
+                    "label": "No exact Meteoritical Bulletin match",
+                    "evidence": (
+                        f"The exact-name lookup for {item.get('name') or item.get('title')} returned no record. "
+                        f"This does not determine authenticity or future database status.{checked_note}"
+                    ),
+                }
+            )
+
+        highlight = {
+            "slug": item.get("slug"),
+            "event_at": event_at,
+            "event_kind": event_kind,
+            "listed_at": listed_at,
+            "found_at": found_at,
+            "recency_labels": recency_labels,
+            "reasons": reasons,
+            "metrics": {
+                "price_per_gram_usd": round(unit_price, 2) if unit_price is not None else None,
+                "price_peer_count": price_peer_count,
+            },
+        }
+        highlights.append({key: value for key, value in highlight.items() if not is_empty_value(value)})
+
+    return {
+        "methodology_version": "spacerocks-highlights-v1",
+        "criteria": {
+            "highlight_limit": HIGHLIGHT_LIMIT,
+            "new_window_days": NEW_LISTING_WINDOW_DAYS,
+            "minimum_price_peers": MINIMUM_PRICE_PEERS,
+            "low_price_percentile": LOW_PRICE_PERCENTILE,
+            "minimum_price_gap": MINIMUM_PRICE_GAP,
+            "minimum_rarity_universe": MINIMUM_RARITY_UNIVERSE,
+            "minimum_rarity_types": MINIMUM_RARITY_TYPES,
+            "maximum_rare_count": MAXIMUM_RARE_COUNT,
+            "maximum_rare_share": MAXIMUM_RARE_SHARE,
+        },
+        "notes": [
+            "Price comparisons use only database-matched shop listings with the same classification and are not market valuations.",
+            "Rare means uncommon in the current shop mix unless a listing includes separate rarity evidence.",
+            "No exact database match does not determine authenticity or whether a name may be approved later.",
+            "A missing highlight usually means there is not enough comparable data.",
+        ],
+        "items": highlights,
+    }
+
+
 def summarize_lookup_status(items: list[dict[str, Any]]) -> dict[str, int]:
     summary = {"enabled": 0, "ok": 0, "not_found": 0, "error": 0, "skipped": 0}
     for item in items:
@@ -635,6 +862,7 @@ def build_shop_data(cache: dict[str, Any]) -> dict[str, Any]:
     items.sort(key=lambda item: (not item.get("featured", False), item.get("title", "").casefold()))
     return {
         "generated_at": now_utc(),
+        "highlights": build_shop_highlights(items),
         "taxonomy": build_taxonomy_index(items),
         "lookup_status": summarize_lookup_status(items),
         "items": items,

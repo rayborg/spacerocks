@@ -40,7 +40,7 @@
           <input name="title" type="text" autocomplete="off" placeholder="Aguas Zarcas slice 3.2 g" required>
         </label>
         <label>
-          <span>Official meteorite name for MetBull lookup</span>
+          <span>Official meteorite name for Meteoritical Bulletin lookup</span>
           <input name="name" type="text" autocomplete="off" placeholder="Aguas Zarcas">
         </label>
         <div class="form-row">
@@ -51,6 +51,16 @@
           <label>
             <span>Price (USD, blank until priced)</span>
             <input name="price_usd" type="number" min="0" step="0.01" placeholder="">
+          </label>
+        </div>
+        <div class="form-row">
+          <label>
+            <span>Date listed</span>
+            <input name="listed_at" type="date">
+          </label>
+          <label>
+            <span>Date found or recovered (optional)</span>
+            <input name="found_at" type="date">
           </label>
         </div>
         <div class="form-row">
@@ -75,6 +85,10 @@
         <label>
           <span>Provenance</span>
           <textarea name="provenance" rows="3" placeholder="Source, packet, field notes, or documentation summary."></textarea>
+        </label>
+        <label>
+          <span>Rarity evidence (optional)</span>
+          <textarea name="rarity_note" rows="2" placeholder="Short evidence-backed explanation; leave blank rather than making an unsupported rarity claim."></textarea>
         </label>
         <label>
           <span>Badges, comma separated</span>
@@ -136,10 +150,13 @@
         weight_g: numberOrNull(data.get("weight_g")),
         price_usd: numberOrNull(data.get("price_usd")),
         status: data.get("status"),
+        listed_at: String(data.get("listed_at") || "").trim(),
+        found_at: String(data.get("found_at") || "").trim(),
         description: String(data.get("description") || "").trim(),
         type: String(data.get("type") || "").trim(),
         classification: "",
         provenance: String(data.get("provenance") || "").trim(),
+        rarity_note: String(data.get("rarity_note") || "").trim(),
         badges,
         checkout_url: checkoutUrl,
         checkout_label: checkoutUrl ? "Buy now" : "",
