@@ -1,24 +1,12 @@
 {
   "lookups": {
     "Aguas Zarcas": {
-      "cached_at": "2026-09-26T12:27:21Z",
+      "cached_at": "2026-10-26T14:12:56Z",
+      "error": "HTTP Error 403: Forbidden",
       "query": "Aguas Zarcas",
-      "record": {
-        "bulletin": "108",
-        "bulletin_url": "https://doi.org/10.1111/maps.13493",
-        "classification": "CM2",
-        "code": "69696",
-        "fall_find": "Confirmed fall",
-        "fall_find_marker": "Y^c",
-        "official_name": "Aguas Zarcas",
-        "place": "Alajuela, Costa Rica",
-        "source_url": "https://www.lpi.usra.edu/meteor/metbull.php?code=69696",
-        "status": "Official",
-        "total_known_mass": "27 kg",
-        "year": "2019"
-      },
       "source": "Meteoritical Bulletin Database",
-      "status": "ok"
+      "source_url": "https://www.lpi.usra.edu/meteor/metbull.php?sea=Aguas+Zarcas&sfor=names&ants=&nwas=&falls=&valids=&stype=exact&lrec=50&map=ge&browse=&country=All&srt=name&categ=All&mblist=All&rect=&phot=&strewn=&snew=0&pnt=Normal+table&dr=&page=0",
+      "status": "error"
     }
   }
 }

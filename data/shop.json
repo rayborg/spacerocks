@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-26T12:27:21Z",
+  "generated_at": "2026-10-26T14:12:56Z",
   "highlights": {
     "criteria": {
       "highlight_limit": 6,
@@ -59,24 +59,10 @@
         }
       ],
       "listed_at": "2026-06-27",
-      "metbull": {
-        "bulletin": "108",
-        "bulletin_url": "https://doi.org/10.1111/maps.13493",
-        "classification": "CM2",
-        "code": "69696",
-        "fall_find": "Confirmed fall",
-        "fall_find_marker": "Y^c",
-        "official_name": "Aguas Zarcas",
-        "place": "Alajuela, Costa Rica",
-        "source_url": "https://www.lpi.usra.edu/meteor/metbull.php?code=69696",
-        "status": "Official",
-        "total_known_mass": "27 kg",
-        "year": "2019"
-      },
       "metbull_lookup": {
-        "cached_at": "2026-09-26T12:27:21Z",
+        "cached_at": "2026-10-26T14:12:56Z",
         "enabled": true,
-        "status": "ok"
+        "status": "error"
       },
       "name": "Aguas Zarcas",
       "provenance": "Prepared as a visual puzzle set with Spacerocks fall-story notes and dossier available before purchase.",
@@ -85,7 +71,7 @@
       "taxonomy": {
         "class": "Chondrite",
         "classification": "CM2",
-        "source": "Meteoritical Bulletin Database",
+        "source": "Listing classification",
         "subtype": "CM2",
         "type": "Carbonaceous chondrite"
       },
@@ -109,24 +95,10 @@
         }
       ],
       "listed_at": "2026-06-27",
-      "metbull": {
-        "bulletin": "108",
-        "bulletin_url": "https://doi.org/10.1111/maps.13493",
-        "classification": "CM2",
-        "code": "69696",
-        "fall_find": "Confirmed fall",
-        "fall_find_marker": "Y^c",
-        "official_name": "Aguas Zarcas",
-        "place": "Alajuela, Costa Rica",
-        "source_url": "https://www.lpi.usra.edu/meteor/metbull.php?code=69696",
-        "status": "Official",
-        "total_known_mass": "27 kg",
-        "year": "2019"
-      },
       "metbull_lookup": {
-        "cached_at": "2026-09-26T12:27:21Z",
+        "cached_at": "2026-10-26T14:12:56Z",
         "enabled": true,
-        "status": "ok"
+        "status": "error"
       },
       "name": "Aguas Zarcas",
       "provenance": "Panel-format story presentation with photo and note packet available before any sale discussion.",
@@ -135,7 +107,7 @@
       "taxonomy": {
         "class": "Chondrite",
         "classification": "CM2",
-        "source": "Meteoritical Bulletin Database",
+        "source": "Listing classification",
         "subtype": "CM2",
         "type": "Carbonaceous chondrite"
       },
@@ -145,9 +117,9 @@
   ],
   "lookup_status": {
     "enabled": 2,
-    "error": 0,
+    "error": 2,
     "not_found": 0,
-    "ok": 2,
+    "ok": 0,
     "skipped": 0
   },
   "taxonomy": {
@@ -179,7 +151,7 @@
                       }
                     ],
                     "name": "Aguas Zarcas",
-                    "source_url": "https://www.lpi.usra.edu/meteor/metbull.php?code=69696"
+                    "source_url": ""
                   }
                 ]
               }
@@ -190,7 +162,7 @@
     ],
     "item_count": 2,
     "listing_count": 2,
-    "metbull_item_count": 2,
+    "metbull_item_count": 0,
     "source": "Meteoritical Bulletin Database exact-name classifications; listing classification is used only when no database classification is available."
   }
 }
