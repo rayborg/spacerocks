@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-29T19:17:36Z",
+  "generated_at": "2026-10-30T20:49:19Z",
   "highlights": {
     "criteria": {
       "highlight_limit": 6,
@@ -60,7 +60,7 @@
       ],
       "listed_at": "2026-06-27",
       "metbull_lookup": {
-        "cached_at": "2026-10-29T19:17:36Z",
+        "cached_at": "2026-10-30T20:49:18Z",
         "enabled": true,
         "status": "error"
       },
@@ -96,7 +96,7 @@
       ],
       "listed_at": "2026-06-27",
       "metbull_lookup": {
-        "cached_at": "2026-10-29T19:17:36Z",
+        "cached_at": "2026-10-30T20:49:18Z",
         "enabled": true,
         "status": "error"
       },
